@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Navbar from './components/Navbar';
+
 import FbLogin from './components/FbLogin';
 import EventContainer from './containers/EventContainer';
 import EventCard from './components/EventCard';
@@ -12,30 +14,37 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      users: [],
       schools: [],
       events: [],
-      users: []
+      eventUserJoins: [],
     }
   }
 
   componentDidMount() {
-    fetch(URL + '/schools')
-    .then(res => res.json())
-    .then(schools => {
-      this.setState({schools: schools})
-    })
-
+   
     fetch(URL + '/users')
     .then(res => res.json())
     .then(users => {
       this.setState({users: users})
     })
-    
+
+     fetch(URL + '/schools')
+    .then(res => res.json())
+    .then(schools => {
+      this.setState({schools: schools})
+    })
 
     fetch(URL + '/events')
     .then(res => res.json())
     .then(events => {
       this.setState({events: events})
+    })
+
+    fetch(URL + '/event_users')
+    .then(res => res.json())
+    .then(joins => {
+      this.setState({eventUserJoins: joins})
     })
   }
 
@@ -57,6 +66,7 @@ class App extends Component {
     return (
       <Router>
         {/* {!this.state.loggedIn ? <FbLogin /> : <EventContainer events={this.state.events} />} */}
+        <Navbar />
         <Route 
           path='/events'
           exact
@@ -64,7 +74,7 @@ class App extends Component {
         />
 
         <Route path='/events/:id' render={props => <EventCard {...props} events={this.state.events} />} />
-        <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} /> } />
+        <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} joins={this.state.eventUserJoins} schools={this.state.schools} /> } />
       </Router>
     )
   }

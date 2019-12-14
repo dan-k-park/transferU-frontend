@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 
 const EventContainer = props => {
   const renderEvents = () => {
@@ -7,7 +6,9 @@ const EventContainer = props => {
   }
 
   return (
-    <Navbar />
+    <div>
+      Placeholder
+    </div>
   )
 }
 
