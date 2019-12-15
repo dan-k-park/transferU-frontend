@@ -9,11 +9,6 @@ class UserProfile extends Component {
   
   constructor(props) {
     super(props)
-    this.state = {
-      user: {},
-      userEvents: [],
-    }
-
     this.userId = this.props.match.params.id
   }
 
@@ -27,31 +22,24 @@ class UserProfile extends Component {
     return userOutput
   }
 
-  getUserEvents () {
-    const userEventsCopy = [...this.state.userEvents]
-    this.props.joins.forEach(join => {
-      if (join.user.id == this.userId) {
-        userEventsCopy.push(join.event)
-      }
+  getUserEventsJoins = () => {
+    return this.props.joins.filter(join => join.user.id == this.props.match.params.id);
+  }
+
+  getUserEvents = () => {
+    let joins = this.getUserEventsJoins()
+    return joins.map(join => {
+      return join.event
     })
-    return userEventsCopy
   }
-
-  componentWillUpdate() {
-    if (this.state.userEvents != this.getUserEvents()) {
-      this.setState({userEvents: this.getUserEvents()})
-    }  
-  }
-
-  renderUserEvents = () => {
-    console.log(this.state.userEvents)
-    // this.state.userEvents.map(userEvent => <UserEvents event={userEvent}/>)
-  }
+  
 
   render() {
 
     const { name, age, bio, imgUrl, school } = this.getUser()
-    
+
+    const userEvents = this.getUserEvents();
+
     return (
       <div className='ui center aligned container'>
         <Segment>
@@ -73,12 +61,14 @@ class UserProfile extends Component {
         <Grid.Column width={8}>
           <Segment>
             <Header size='large'>Events</Header>
-            {this.renderUserEvents()}
+            {console.log(userEvents)}
+            {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
           </Segment>
         </Grid.Column>
         <Grid.Column width={6}>
           <Segment>
             <h1>Friends</h1>
+
           </Segment>
         </Grid.Column>
       </Grid>
