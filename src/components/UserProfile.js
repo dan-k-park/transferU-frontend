@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
 import UserEvents from './UserEvents'
-import { Grid, Image, Segment, Header } from 'semantic-ui-react'
+import { Grid, Button, Segment, Header } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
+
+const URL = 'http://localhost:3001'
 
 
 class UserProfile extends Component {
   
   constructor(props) {
     super(props)
+    this.state = {
+      name: '',
+      age: '',
+      bio: '',
+      imgUrl: '',
+      eventUserJoins: []
+    }
     this.userId = this.props.match.params.id
   }
 
+  componentDidMount() {
+    fetch(URL + '/event_users')
+    .then(res => res.json())
+    .then(joins => {
+      this.setState({eventUserJoins: joins})
+    })
+  }
+
   getUser = () => {
-    let userOutput = {name: 'N/A', age: 0, bio: 'N/A', imgUrl: 'N/A', school: {}}
+    let userOutput = {name: this.state.name, age: this.state.age, bio: this.state.bio, imgUrl: this.state.imgUrl, school: {}}
     this.props.users.forEach(user => {
       if (user.id == this.userId) {
         userOutput = user
@@ -23,7 +40,7 @@ class UserProfile extends Component {
   }
 
   getUserEventsJoins = () => {
-    return this.props.joins.filter(join => join.user.id == this.props.match.params.id);
+    return this.state.eventUserJoins.filter(join => join.user.id == this.props.match.params.id);
   }
 
   getUserEvents = () => {
@@ -61,7 +78,6 @@ class UserProfile extends Component {
         <Grid.Column width={8}>
           <Segment>
             <Header size='large'>Events</Header>
-            {console.log(userEvents)}
             {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
           </Segment>
         </Grid.Column>

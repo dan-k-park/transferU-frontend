@@ -17,7 +17,6 @@ class App extends Component {
       users: [],
       schools: [],
       events: [],
-      eventUserJoins: [],
     }
   }
 
@@ -39,12 +38,6 @@ class App extends Component {
     .then(res => res.json())
     .then(events => {
       this.setState({events: events})
-    })
-
-    fetch(URL + '/event_users')
-    .then(res => res.json())
-    .then(joins => {
-      this.setState({eventUserJoins: joins})
     })
   }
 
@@ -74,7 +67,7 @@ class App extends Component {
         />
 
         <Route path='/events/:id' render={props => <EventCard {...props} events={this.state.events} />} />
-        <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} joins={this.state.eventUserJoins} schools={this.state.schools} /> } />
+        <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} schools={this.state.schools} /> } />
       </Router>
     )
   }

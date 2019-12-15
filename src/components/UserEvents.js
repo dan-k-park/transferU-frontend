@@ -7,7 +7,7 @@ const UserEvent = ({ event }) => {
 
   return(
     <div>
-      <Link to={`events/${id}`}>{name} on {date}</Link>
+      <Link to={`/events/${id}`}>{name} on {date}</Link>
     </div>
   )
 }
