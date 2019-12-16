@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 import { Menu, Dropdown } from 'semantic-ui-react'
 
 class Navbar extends Component {
-  state = {}
-
   render() {
 
     return (
       <Menu color={'green'}>
 
-        <Menu.Item>
+        <Menu.Item as={Link} to='/events'>
           TransferU
         </Menu.Item>
 

@@ -1,35 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
+import { Card, Icon } from 'semantic-ui-react'
 
-const EventCard = ({ events, match }) => {
 
-  const getEvent = () => {
-    let eventId = match.params.id;
-    let output = { name: 'N/A', date: 'N/A', description: 'N/A', location: 'N/A', attendees: 'N/A'}
-    events.forEach(event => {
-      if (event.id == eventId) {
-        output = event
-      }
-    });
-    return output
-  }
+const EventCard = props => {
 
-  const { name, date, description, location, attendees } = getEvent();
+  const { event } = props;
 
   return (
-    <div className="ui two column centered grid">
-      <div className="column">
-        <div className="ui raised center aligned segment">
-          <h1>{name} | {date}</h1>
-          <h2>{location}</h2>
-          <p>
-            {description}
-            <br></br>
-            Number Attending: {attendees}
-          </p>
-        </div>
-      </div>
+    <div className='ui column'>
+      <Card>
+      <Card.Content header={event.name} />
+      <Card.Content description>
+        {event.description}
+        <br></br>
+        <Link to={`events/${event.id}`}>More Info</Link>
+      </Card.Content>
+      <Card.Content extra>
+        <Icon name='user' />{event.attendees} Attending
+      </Card.Content>
+      </Card>
     </div>
   )
+
 }
 
 export default EventCard;

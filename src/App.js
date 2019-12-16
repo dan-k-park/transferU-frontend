@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 
 import FbLogin from './components/FbLogin';
 import EventContainer from './containers/EventContainer';
-import EventCard from './components/EventCard';
+import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
 import './App.css';
 
@@ -54,6 +54,20 @@ class App extends Component {
       })
     })
   }
+
+  handleEventAttending = () => {
+    fetch(URL + '/event_users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify({
+        user: this.state.users[0],
+        event: this.state.event
+      })
+    })
+  }
   
   render() {
     return (
@@ -66,7 +80,7 @@ class App extends Component {
           render={() =>  <EventContainer events={this.state.events} /> }
         />
 
-        <Route path='/events/:id' render={props => <EventCard {...props} events={this.state.events} />} />
+        <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} handleEventAttending={this.handleEventAttending}  />} />
         <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} schools={this.state.schools} /> } />
       </Router>
     )
