@@ -66,7 +66,7 @@ class UserProfile extends Component {
                 <img src={imgUrl}/>
               </Segment>
             </Grid.Column>
-            <Grid.Column width={4}>
+            <Grid.Column width={4} textAlign={'left'}>
               <h2>{name}</h2>
               <h3>{age}</h3>
               <h4>{school.name}</h4>
@@ -77,14 +77,14 @@ class UserProfile extends Component {
       <Grid>
         <Grid.Column width={8}>
           <Segment>
-            <Header size='large'>Events</Header>
+            <Header size='large'>My Events</Header>
             {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
           </Segment>
         </Grid.Column>
         <Grid.Column width={6}>
           <Segment>
             <h1>Friends</h1>
-
+            <p>None lol</p>
           </Segment>
         </Grid.Column>
       </Grid>

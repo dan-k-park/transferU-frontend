@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
+import NewEvent from './components/NewEvent';
 
 import FbLogin from './components/FbLogin';
 import EventContainer from './containers/EventContainer';
@@ -55,6 +56,15 @@ class App extends Component {
     })
   }
 
+  createEvent = event => {
+    const eventsCopy = [...this.state.events]
+    eventsCopy.push(event)
+
+    this.setState({
+      events: eventsCopy,
+    })
+  }
+
   handleEventAttending = event => {
     fetch(URL + '/event_users', {
       method: 'POST',
@@ -75,11 +85,17 @@ class App extends Component {
     return (
       <Router>
         {/* {!this.state.loggedIn ? <FbLogin /> : <EventContainer events={this.state.events} />} */}
-        <Navbar />
+        <Navbar currentUser={this.state.users[0]}/>
         <Route 
           path='/events'
           exact
           render={() =>  <EventContainer events={this.state.events} /> }
+        />
+
+        <Route 
+          path='/new_event'
+          exact
+          render={(props) => <NewEvent {...props} createEvent={this.createEvent} handleEventAttending={this.handleEventAttending}/>}
         />
 
         <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} handleEventAttending={this.handleEventAttending}  />} />
