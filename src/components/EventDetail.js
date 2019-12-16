@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 
-const URL = 'http://localhost:3001'
-
-
 class EventDetail extends Component {
 
   constructor(props) {
@@ -20,7 +17,7 @@ class EventDetail extends Component {
   }
 
   handleClick = () => {
-    this.props.handleEventAttending(this.state.attending)
+    this.props.handleEventAttending(this.state.event)
   }
 
 

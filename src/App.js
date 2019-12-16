@@ -55,7 +55,7 @@ class App extends Component {
     })
   }
 
-  handleEventAttending = () => {
+  handleEventAttending = event => {
     fetch(URL + '/event_users', {
       method: 'POST',
       headers: {
@@ -63,8 +63,10 @@ class App extends Component {
         Accepts: 'application/json'
       },
       body: JSON.stringify({
-        user: this.state.users[0],
-        event: this.state.event
+        event_user: {
+          user_id: this.state.users[0].id,
+          event_id: event.id
+        }
       })
     })
   }
