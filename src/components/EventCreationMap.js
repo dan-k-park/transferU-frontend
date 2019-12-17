@@ -35,6 +35,13 @@ class EventCreationMap extends Component {
     )
   }
 
+  onClick = (mapProps, map, clickEvent) => {
+    console.log(clickEvent.latLng.lat(), clickEvent.latLng.lng())
+    // const { latLng } = clickEvent;
+    // console.log('lat: ', latLng.lat())
+    // console.log('lng: ', latlng.lng())
+  }
+
   render() {
 
     return (
@@ -45,6 +52,7 @@ class EventCreationMap extends Component {
               google={this.props.google}
               zoom={17}
               style={style}
+              onClick={this.onClick}
               initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
             >
             </Map>

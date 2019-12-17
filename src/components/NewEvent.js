@@ -10,9 +10,10 @@ class NewEvent extends Component {
     this.state = {
       name: '',
       date: '',
-      attendees: 1,
+      attendees: 0,
       description: '',
       location: '',
+      attending: '',
       school_address: ''
     }
   }
@@ -39,8 +40,16 @@ class NewEvent extends Component {
     this.setState({location: evt.target.value})
   }
 
+  handleAttending = (evt, { value }) => {
+    this.setState({attending: value})
+  }
+
   handleSubmit = evt => {
     evt.preventDefault();
+    
+    if (this.state.attending === 'y') {
+      this.setState({attendees: 1})
+    }
 
     fetch(URL + `/events`, {
       method: 'POST',
@@ -59,14 +68,16 @@ class NewEvent extends Component {
     .then(res => res.json())
     .then(event => {
       this.props.createEvent(event)
-      this.props.handleEventAttending(event)
+      if (this.state.attending === 'y') {
+        this.props.handleEventAttending(event)
+      }
     })
-
-
     this.props.history.push('/events')
   }
 
   render() {
+
+    const { value } = this.state.attending
     return (
       <Container>
         <Segment raised>
@@ -80,16 +91,30 @@ class NewEvent extends Component {
             placeholder='Give a brief description of your event' 
             onChange={this.handleDesc}
           />
-          <Form.Input label='Location' placeholder='Use the map to get the address for your event' onChange={this.handleLocation}/>
+          <Form.Input label='Location' placeholder='Use the map as a guide to find a suitable location' onChange={this.handleLocation}/>
           <Segment basic style={{height:'600px'}}>
             <EventCreationMap location={this.state.school_address}/>
           </Segment>
+
+          <Form.Group inline>
+            <label>Will You Attend?</label>
+            <Form.Radio
+              label='Yes'
+              value='y'
+              checked={value === 'y'}
+              onChange={this.handleAttending}
+            />
+            <Form.Radio
+              label='No'
+              value='n'
+              checked={value === 'n'}
+              onChange={this.handleAttending}
+            />
+          </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
         </Segment>
       </Container>
-    //   <div className='ui center aligned container basic segment'>
-    // </div>
     );
   }
 
