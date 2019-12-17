@@ -67,9 +67,7 @@ class App extends Component {
     const eventsCopy = [...this.state.events]
     eventsCopy.push(event)
 
-    this.setState({
-      events: eventsCopy,
-    })
+    this.setState({events: eventsCopy})
   }
 
   handleNewEventAttending = (event, attending) => {
@@ -86,6 +84,12 @@ class App extends Component {
             attending: attending,
           }
         })
+      })
+      .then(res => res.json())
+      .then(newJoin => {
+        const joinsCopy = [...this.state.joins]
+        joinsCopy.push(newJoin)
+        this.setState({joins: joinsCopy})
       })
     }
 

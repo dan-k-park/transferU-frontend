@@ -8,7 +8,7 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
-      join: {},
+      join: null,
     }
     this.eventId = this.props.match.params.id
   }
@@ -21,7 +21,7 @@ class EventDetail extends Component {
   }
 
   handleAttendClick = () => {
-    if (this.state.join !== {}) {
+    if (!this.state.join) {
       this.props.handleEventAttending(this.state.join.id, true)
     } else {
       this.props.handleNewEventAttending(this.state.event, true)
@@ -47,12 +47,12 @@ class EventDetail extends Component {
               <p>{description}</p>
                 <br></br>
                 <Button.Group>
-                  <Button positive onClick={this.handleAttendClick()}>Attend</Button>
+                  <Button positive onClick={this.handleAttendClick}>Attend</Button>
                   <Button.Or />
-                  <Button cancel onClick={this.handleCancelClick()}>Cancel</Button>
+                  <Button negative onClick={this.handleCancelClick}>Cancel</Button>
                 </Button.Group>
             </Segment>
-            <Segment style={{height:'500px'}}>
+            <Segment style={{height:'660px'}}>
               <h1>Where: {location}</h1>
               <EventLocationMap location={location}/>
             </Segment>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UserEvents from './UserEvents'
-import { Grid, Button, Segment, Header } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Header } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
 
@@ -77,12 +77,14 @@ class UserProfile extends Component {
         <Grid.Column width={10}>
           <Segment>
             <Header size='large'>My Events</Header>
+            <Divider />
             {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
           </Segment>
         </Grid.Column>
         <Grid.Column>
           <Segment>
-            <h1>Friends</h1>
+            <Header size='large'>Friends</Header>
+            <Divider />
             <p>None lol</p>
           </Segment>
         </Grid.Column>
