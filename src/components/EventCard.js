@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Card, Container, Icon, Image } from 'semantic-ui-react'
 
-const imgUrl = 'https://https://picsum.photos/id/1084/200/300'
-
 class EventCard extends Component {
 
   constructor(props) {
@@ -11,15 +9,18 @@ class EventCard extends Component {
     this.state = {
       event: {},
       imgUrl: '',
+      shortDesc: '',
       eventLoaded: false,
     }
   }
 
   componentDidMount() {
-    const imgUrl = `https://picsum.photos/id/${Math.floor(Math.random() * 1084)}/200/300`
+    const imgUrl = `https://picsum.photos/id/${Math.floor(Math.random() * 1084)}/200/300`;
+    const shortDesc = this.props.event.description.slice(0, this.props.event.description.length * 0.7) + '...';
     this.setState({
       event: this.props.event,
       imgUrl: imgUrl,
+      shortDesc: shortDesc,
       eventLoaded:true,
     })
   }
@@ -32,7 +33,7 @@ class EventCard extends Component {
             <Image src={ this.state.imgUrl } />
             <Card.Content header={this.state.event.name} />
             <Card.Content textAlign='left'>
-              {this.state.event.description}
+              {this.state.shortDesc}
               <br></br>
               <Link to={`events/${this.state.event.id}`}>More Info</Link>
             </Card.Content>
