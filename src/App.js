@@ -95,7 +95,7 @@ class App extends Component {
         <Route 
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} createEvent={this.createEvent} handleEventAttending={this.handleEventAttending}/>}
+          render={(props) => <NewEvent {...props} createEvent={this.createEvent} handleEventAttending={this.handleEventAttending} school_address={this.state.users[0].school.address} />}
         />
 
         <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} handleEventAttending={this.handleEventAttending}  />} />

@@ -11,7 +11,7 @@ const EventCard = props => {
     <div className='ui column'>
       <Card>
       <Card.Content header={event.name} />
-      <Card.Content description>
+      <Card.Content >
         {event.description}
         <br></br>
         <Link to={`events/${event.id}`}>More Info</Link>

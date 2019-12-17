@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
+import EventLocationMap from './EventLocationMap';
+import { Segment, Button } from 'semantic-ui-react';
 
 class EventDetail extends Component {
 
@@ -27,17 +28,22 @@ class EventDetail extends Component {
     return (      
       <div className="ui two column centered grid">
         <div className="column">
-          <div className="ui raised center aligned segment">
-            <h1>{name} | {date}</h1>
-            <h2>{location}</h2>
-            <p>
-              {description}
+          <Segment.Group>
+          <Segment raised textAlign='left'>
+            <h1>Event Name: {name}</h1>
+            <h1>When: {date}</h1>
+            <h1>Descripton: </h1>
+            <p>{description}</p>
               <br></br>
               <Button onClick={this.handleClick}>
                 {this.state.attending === true ? 'Cancel' : 'Attend' }
               </Button>
-            </p>
-          </div>
+          </Segment>
+          <Segment style={{height:'500px'}}>
+            <h1>Where: {location}</h1>
+            <EventLocationMap location={location}/>
+          </Segment>
+          </Segment.Group>
         </div>
       </div>
     )

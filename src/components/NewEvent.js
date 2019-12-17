@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
+import EventCreationMap from './EventCreationMap';
+import { Form, Container, Segment } from 'semantic-ui-react';
 
 const URL = 'http://localhost:3001'
 
@@ -11,8 +12,13 @@ class NewEvent extends Component {
       date: '',
       attendees: 1,
       description: '',
-      location: ''
+      location: '',
+      school_address: ''
     }
+  }
+
+  componentDidMount() {
+    this.setState({school_address: this.props.school_address}) 
   }
 
   handleName = evt => this.setState({name: evt.target.value});
@@ -27,6 +33,10 @@ class NewEvent extends Component {
     let eventDate = dateArr.join("-")
 
     this.setState({date: eventDate})
+  }
+
+  handleLocation = evt => {
+    this.setState({location: evt.target.value})
   }
 
   handleSubmit = evt => {
@@ -58,21 +68,28 @@ class NewEvent extends Component {
 
   render() {
     return (
-      <div className='ui center aligned container basic segment'>
-        <Form onSubmit={this.handleSubmit}>
-        <Form.Group widths='equal'>
-          <Form.Input label='Name' placeholder='Event Name' onChange={this.handleName} />
-          <Form.Input label='Event Date' type='date' onChange={this.handleDate} />
-        </Form.Group>
-        <Form.TextArea 
-         label='Description' 
-          placeholder='Give a brief description of your event' 
-          onChange={this.handleDesc}
-        />
-
-        <Form.Button>Submit</Form.Button>
-      </Form>
-    </div>
+      <Container>
+        <Segment raised>
+          <Form onSubmit={this.handleSubmit}>
+          <Form.Group widths='equal'>
+            <Form.Input label='Name' placeholder='Event Name' onChange={this.handleName} />
+            <Form.Input label='Date' type='date' onChange={this.handleDate} />
+          </Form.Group>
+          <Form.TextArea 
+          label='Description' 
+            placeholder='Give a brief description of your event' 
+            onChange={this.handleDesc}
+          />
+          <Form.Input label='Location' placeholder='Use the map to get the address for your event' onChange={this.handleLocation}/>
+          <Segment basic style={{height:'600px'}}>
+            <EventCreationMap location={this.state.school_address}/>
+          </Segment>
+          <Form.Button>Submit</Form.Button>
+        </Form>
+        </Segment>
+      </Container>
+    //   <div className='ui center aligned container basic segment'>
+    // </div>
     );
   }
 
