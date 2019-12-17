@@ -9,16 +9,16 @@ const EventCard = props => {
 
   return (
     <div className='ui column'>
-      <Card>
-      <Card.Content header={event.name} />
-      <Card.Content >
-        {event.description}
-        <br></br>
-        <Link to={`events/${event.id}`}>More Info</Link>
-      </Card.Content>
-      <Card.Content extra>
-        <Icon name='user' />{event.attendees} Attending
-      </Card.Content>
+      <Card fluid>
+        <Card.Content header={event.name} />
+        <Card.Content >
+          {event.description}
+          <br></br>
+          <Link to={`events/${event.id}`}>More Info</Link>
+        </Card.Content>
+        <Card.Content extra>
+          <Icon name='user' />{event.attendees} Attending
+        </Card.Content>
       </Card>
     </div>
   )

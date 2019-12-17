@@ -1,5 +1,6 @@
 import React from 'react';
 import EventCard from '../components/EventCard'
+import { Container, Grid } from 'semantic-ui-react'
 
 const EventContainer = props => {
   // Pass in an add event method as a prop here
@@ -11,12 +12,11 @@ const EventContainer = props => {
   }
 
   return (
-    <div className="ui four column grid">
-    		<div className="row">
-    		  {/*...and here..*/}
-					{renderEvents()}
-    		</div>
-  	  </div>
+    <Grid centered columns={3}>
+      <Grid.column>
+        {renderEvents()}
+      </Grid.column>
+    </Grid>
   )
 }
 

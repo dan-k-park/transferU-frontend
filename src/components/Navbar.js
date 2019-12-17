@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 
 import { Menu, Dropdown } from 'semantic-ui-react'
 
+
 class Navbar extends Component {
 
   render() {
 
     return (
-      <Menu color={'green'}>
+      <Menu secondary inverted size='massive' color='teal'>
 
         <Menu.Item as={Link} to='/events'>
           TransferU
@@ -21,7 +22,9 @@ class Navbar extends Component {
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Item text='My Events' />
               <Dropdown.Divider />
-              <Dropdown.Item text='Logout' />
+              <Dropdown.Item>
+                <a href='http://ditzbitz.com/sheephole.html'>Logout</a>
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>

@@ -67,8 +67,7 @@ class UserProfile extends Component {
               </Segment>
             </Grid.Column>
             <Grid.Column width={4} textAlign={'left'}>
-              <h2>{name}</h2>
-              <h3>{age}</h3>
+              <h2>{name} ({age})</h2>
               <h4>{school.name}</h4>
               <p>{bio}</p>
             </Grid.Column>

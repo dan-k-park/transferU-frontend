@@ -28,21 +28,21 @@ class EventDetail extends Component {
     return (      
       <div className="ui two column centered grid">
         <div className="column">
-          <Segment.Group>
-          <Segment raised textAlign='left'>
-            <h1>Event Name: {name}</h1>
-            <h1>When: {date}</h1>
-            <h1>Descripton: </h1>
-            <p>{description}</p>
-              <br></br>
-              <Button onClick={this.handleClick}>
-                {this.state.attending === true ? 'Cancel' : 'Attend' }
-              </Button>
-          </Segment>
-          <Segment style={{height:'500px'}}>
-            <h1>Where: {location}</h1>
-            <EventLocationMap location={location}/>
-          </Segment>
+          <Segment.Group raised>
+            <Segment textAlign='left'>
+              <h1>Event Name: {name}</h1>
+              <h1>When: {date}</h1>
+              <h1>Descripton: </h1>
+              <p>{description}</p>
+                <br></br>
+                <Button onClick={this.handleClick}>
+                  {this.state.attending === true ? 'Cancel' : 'Attend' }
+                </Button>
+            </Segment>
+            <Segment style={{height:'500px'}}>
+              <h1>Where: {location}</h1>
+              <EventLocationMap location={location}/>
+            </Segment>
           </Segment.Group>
         </div>
       </div>
