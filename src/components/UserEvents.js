@@ -11,7 +11,7 @@ const UserEvent = ({ event }) => {
       <List animated verticalAlign='middle'>
         <List.Item>
           <List.Content>
-            <List.Header><h2><Link to={`/events/${id}`}>{name} on {date}</Link></h2></List.Header>
+            <List.Header><h3><Link to={`/events/${id}`} className='BlackText'>{name} on {date}</Link></h3></List.Header>
           </List.Content>
         </List.Item>
       </List>

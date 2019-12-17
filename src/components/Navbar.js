@@ -22,7 +22,7 @@ class Navbar extends Component {
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Divider />
               <Dropdown.Item>
-                <h3><a href='http://ditzbitz.com/sheephole.html'>Logout</a></h3>
+                <h3><a href='http://ditzbitz.com/sheephole.html' className='BlackText'>Logout</a></h3>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

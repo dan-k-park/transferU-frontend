@@ -8,7 +8,7 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
-      join: null,
+      joins: null,
     }
     this.eventId = this.props.match.params.id
   }
@@ -16,12 +16,15 @@ class EventDetail extends Component {
   componentDidMount() {
     this.setState({
       event: this.props.events.filter(event => event.id == this.props.match.params.id)[0],
-      join: this.props.joins.filter(join => join.event.id == this.props.match.params.id )
+      joins: this.props.joins.filter(join => join.event_id == this.props.match.params.id )
     })
   }
 
   handleAttendClick = () => {
-    if (!this.state.join) {
+    // if (this.state.joins.event_id === this.state.event_id) {
+    //   alert('You\'re already attending this event')
+    // } else 
+    if (!this.state.joins) {
       this.props.handleEventAttending(this.state.join.id, true)
     } else {
       this.props.handleNewEventAttending(this.state.event, true)
