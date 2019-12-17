@@ -36,10 +36,8 @@ class EventCreationMap extends Component {
   }
 
   onClick = (mapProps, map, clickEvent) => {
-    console.log(clickEvent.latLng.lat(), clickEvent.latLng.lng())
-    // const { latLng } = clickEvent;
-    // console.log('lat: ', latLng.lat())
-    // console.log('lng: ', latlng.lng())
+    const lat = clickEvent.latLng.lat()
+    const lng = clickEvent.latLng.lng()
   }
 
   render() {
