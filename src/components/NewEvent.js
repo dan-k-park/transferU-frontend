@@ -69,7 +69,7 @@ class NewEvent extends Component {
     .then(event => {
       this.props.createEvent(event)
       if (this.state.attending === 'y') {
-        this.props.handleEventAttending(event)
+        this.props.attendEvent(event)
       }
     })
     this.props.history.push('/events')

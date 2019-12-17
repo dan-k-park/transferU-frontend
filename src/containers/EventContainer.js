@@ -12,11 +12,10 @@ const EventContainer = props => {
   }
 
   return (
-    <Grid centered columns={3}>
-      <Grid.column>
-        {renderEvents()}
-      </Grid.column>
-    </Grid>
+    <Container>
+      {renderEvents()}
+    </Container>
+
   )
 }
 

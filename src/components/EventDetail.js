@@ -8,17 +8,21 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
-      attending: false,
+      join: {},
     }
     this.eventId = this.props.match.params.id
   }
   
   componentDidMount() {
-    this.setState({event: this.props.events.filter(event => event.id == this.props.match.params.id)[0]})
+    this.setState({
+      event: this.props.events.filter(event => event.id == this.props.match.params.id)[0],
+      join: this.props.joins.filter(join => join.event.id == this.props.match.params.id )
+    })
   }
 
   handleClick = () => {
-    this.props.handleEventAttending(this.state.event)
+    this.state.attending === false ? this.props.attendEvent(this.state.event) : this.props.cancelAttendingEvent(this.state.event)
+    this.setState({attending: !this.state.attending})
   }
 
 
@@ -36,7 +40,7 @@ class EventDetail extends Component {
               <p>{description}</p>
                 <br></br>
                 <Button onClick={this.handleClick}>
-                  {this.state.attending === true ? 'Cancel' : 'Attend' }
+                  Attend
                 </Button>
             </Segment>
             <Segment style={{height:'500px'}}>
