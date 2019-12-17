@@ -1,17 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
 
+const imgUrl = 'https://picsum.photos/200/300'
 
 const EventCard = props => {
 
   const { event } = props;
 
   return (
-    <div className='ui column'>
       <Card fluid>
+        <Image src={imgUrl} />
         <Card.Content header={event.name} />
-        <Card.Content >
+        <Card.Content textAlign='left'>
           {event.description}
           <br></br>
           <Link to={`events/${event.id}`}>More Info</Link>
@@ -20,7 +21,6 @@ const EventCard = props => {
           <Icon name='user' />{event.attendees} Attending
         </Card.Content>
       </Card>
-    </div>
   )
 
 }

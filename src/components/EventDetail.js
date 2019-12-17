@@ -20,9 +20,16 @@ class EventDetail extends Component {
     })
   }
 
-  handleClick = () => {
-    this.state.attending === false ? this.props.attendEvent(this.state.event) : this.props.cancelAttendingEvent(this.state.event)
-    this.setState({attending: !this.state.attending})
+  handleAttendClick = () => {
+    if (this.state.join !== {}) {
+      this.props.handleEventAttending(this.state.join.id, true)
+    } else {
+      this.props.handleNewEventAttending(this.state.event, true)
+    }
+  }
+
+  handleCancelClick = () => {
+    this.props.handleEventAttending(this.state.join.id, false)
   }
 
 
@@ -39,9 +46,11 @@ class EventDetail extends Component {
               <h1>Descripton: </h1>
               <p>{description}</p>
                 <br></br>
-                <Button onClick={this.handleClick}>
-                  Attend
-                </Button>
+                <Button.Group>
+                  <Button positive onClick={this.handleAttendClick()}>Attend</Button>
+                  <Button.Or />
+                  <Button cancel onClick={this.handleCancelClick()}>Cancel</Button>
+                </Button.Group>
             </Segment>
             <Segment style={{height:'500px'}}>
               <h1>Where: {location}</h1>

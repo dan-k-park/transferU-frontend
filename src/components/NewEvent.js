@@ -68,9 +68,7 @@ class NewEvent extends Component {
     .then(res => res.json())
     .then(event => {
       this.props.createEvent(event)
-      if (this.state.attending === 'y') {
-        this.props.attendEvent(event)
-      }
+      this.state.attending === 'y' ? this.props.handleNewEventAttending(event, true) : this.props.handleNewEventAttending(event, false)
     })
     this.props.history.push('/events')
   }
@@ -97,7 +95,7 @@ class NewEvent extends Component {
           </Segment>
 
           <Form.Group inline>
-            <label>Will You Attend?</label>
+            <label>Will You Be Attending?</label>
             <Form.Radio
               label='Yes'
               value='y'

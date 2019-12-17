@@ -38,6 +38,12 @@ class EventCreationMap extends Component {
   onClick = (mapProps, map, clickEvent) => {
     const lat = clickEvent.latLng.lat()
     const lng = clickEvent.latLng.lng()
+    Geocode.fromLatLng(lat, lng).then(
+      response => {
+        const address = response.results[0].formatted_address;
+        alert(address);
+      }
+    );
   }
 
   render() {

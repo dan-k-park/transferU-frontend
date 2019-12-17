@@ -72,7 +72,7 @@ class App extends Component {
     })
   }
 
-  attendEvent = event => {
+  handleNewEventAttending = (event, attending) => {
       fetch(URL + '/event_users', {
         method: 'POST',
         headers: {
@@ -83,15 +83,25 @@ class App extends Component {
           event_user: {
             user_id: this.state.users[0].id,
             event_id: event.id,
-            attending: true,
+            attending: attending,
           }
         })
       })
     }
 
-
-  cancelAttendingEvent = event => {
-    alert('Cancelling RSVP')
+  handleEventAttending = (id, attending) => {
+    fetch(URL + `/event_users/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify({
+        event_user: {
+          attending: attending,
+        }
+      })
+    })
   }
   
   render() {
@@ -108,10 +118,10 @@ class App extends Component {
         <Route 
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} createEvent={this.createEvent} attendEvent={this.attendEvent} school_address={this.state.users[0].school.address} />}
+          render={(props) => <NewEvent {...props} createEvent={this.createEvent} handleNewEventAttending={this.handleNewEventAttending} school_address={this.state.users[0].school.address} />}
         />
 
-        <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} joins={this.state.joins} attendEvent={this.attendEvent} cancelAttendingEvent={this.cancelAttendingEvent}  />} />
+        <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} joins={this.state.joins} handleNewEventAttending={this.handleNewEventAttending} handleEventAttending={this.handleEventAttending} />} />
         <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} schools={this.state.schools} /> } />
       </Router>
     )

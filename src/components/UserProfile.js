@@ -40,7 +40,7 @@ class UserProfile extends Component {
   }
 
   getUserEventsJoins = () => {
-    return this.state.eventUserJoins.filter(join => join.user.id == this.props.match.params.id);
+    return this.state.eventUserJoins.filter(join => join.user.id == this.props.match.params.id && join.attending === true );
   }
 
   getUserEvents = () => {
@@ -73,14 +73,14 @@ class UserProfile extends Component {
             </Grid.Column>
           </Grid>
       </Segment>
-      <Grid>
-        <Grid.Column width={8}>
+      <Grid columns='equal'>
+        <Grid.Column width={10}>
           <Segment>
             <Header size='large'>My Events</Header>
             {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
           </Segment>
         </Grid.Column>
-        <Grid.Column width={6}>
+        <Grid.Column>
           <Segment>
             <h1>Friends</h1>
             <p>None lol</p>

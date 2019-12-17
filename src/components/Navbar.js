@@ -20,10 +20,9 @@ class Navbar extends Component {
             <Dropdown.Menu direction={'left'}>
               <Dropdown.Item as={Link} to='/users/1' text='My Profile' />
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
-              <Dropdown.Item text='My Events' />
               <Dropdown.Divider />
               <Dropdown.Item>
-                <a href='http://ditzbitz.com/sheephole.html'>Logout</a>
+                <h3><a href='http://ditzbitz.com/sheephole.html'>Logout</a></h3>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
