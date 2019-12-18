@@ -30,7 +30,7 @@ class EventCard extends Component {
     return (
       <>
         {this.state.eventLoaded ?
-          <Card className='Border'>
+          <Card>
             <Image src={ this.state.imgUrl } />
             <Card.Content header={this.state.event.name} />
             <Card.Content textAlign='left'>

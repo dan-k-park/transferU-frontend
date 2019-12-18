@@ -10,11 +10,9 @@ class Navbar extends Component {
 
     return (
       <Menu secondary inverted size='massive' color='teal'>
-
         <Menu.Item as={Link} to='/events'>
-          TransferU
+          <h2 className='WhiteText'>TransferU</h2>
         </Menu.Item>
-
         <Menu.Item position={'right'}>
           <Dropdown text={this.props.currentUser ? this.props.currentUser.name : 'User'}>
             <Dropdown.Menu direction={'left'}>
@@ -27,7 +25,6 @@ class Navbar extends Component {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
-
       </Menu>
     )
   }
