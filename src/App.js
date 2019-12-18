@@ -22,25 +22,37 @@ class App extends Component {
   }
 
   componentDidMount() {
-   
+    this.getUsers()
+    this.getSchools()
+    this.getEvents()
+    this.getJoins()
+  }
+
+  getUsers = () => {
     fetch(URL + '/users')
     .then(res => res.json())
     .then(users => {
       this.setState({users: users})
     })
+  }
 
-     fetch(URL + '/schools')
+  getSchools = () => {
+    fetch(URL + '/schools')
     .then(res => res.json())
     .then(schools => {
       this.setState({schools: schools})
     })
+  }
 
+  getEvents = () => {
     fetch(URL + '/events')
     .then(res => res.json())
     .then(events => {
       this.setState({events: events})
     })
+  }
 
+  getJoins = () => {
     fetch(URL + '/event_users')
     .then(res => res.json())
     .then(joins => {
@@ -74,29 +86,49 @@ class App extends Component {
   }
 
   attendEvent = (event, attending) => {
-      fetch(URL + '/event_users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accepts: 'application/json'
-        },
-        body: JSON.stringify({
-          event_user: {
-            user_id: this.state.users[0].id,
-            event_id: event.id,
-            attending: attending,
-          }
-        })
+    this.adjustAttendeeCount(event, 'attend')
+    fetch(URL + '/event_users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify({
+        event_user: {
+          user_id: this.state.users[0].id,
+          event_id: event.id,
+          attending: attending,
+        }
       })
-      .then(res => res.json())
-      .then(newJoin => {
-        const joinsCopy = [...this.state.joins]
-        joinsCopy.push(newJoin)
-        this.setState({joins: joinsCopy})
-      })
-    }
+    })
+    .then(res => res.json())
+    .then(newJoin => {
+      const joinsCopy = [...this.state.joins]
+      joinsCopy.push(newJoin)
+      this.setState({joins: joinsCopy})
+    })
+  }
 
-  cancelAttending = (id) => {
+  adjustAttendeeCount = (event, action) => {
+    let adjustedAttendees = event.attendees;
+    action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
+    fetch(URL + `/events/${event.id}`,{
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify({
+        attendees: adjustedAttendees
+      })
+    })
+    .then(() => {
+      this.getEvents();
+    })
+  }
+
+  cancelAttending = (event, id) => {
+    this.adjustAttendeeCount(event, 'cancel')
     fetch(URL + `/event_users/${id}`, {
       method: 'DELETE'
     })

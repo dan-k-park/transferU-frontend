@@ -19,6 +19,21 @@ class EventDetail extends Component {
     })
   }
 
+  adjustAttendeeCount = (id, action) => {
+    const adjustedAttendees = this.state.event.attendees;
+    action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
+    fetch(URL + `/${id}`,{
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify({
+        attendees: adjustedAttendees
+      })
+    })
+  }
+
   handleAttendClick = () => {
     const join = this.props.findJoin(this.state.event)
     !join ? this.props.attendEvent(this.state.event, true)
@@ -27,8 +42,7 @@ class EventDetail extends Component {
 
   handleCancelClick = () => {
     const join = this.props.findJoin(this.state.event)
-    !join ? alert('You never RSVP\'d to this event')
-    : this.props.cancelAttending(join.id, true)
+    this.props.cancelAttending(this.state.event, join.id)
   }
 
   render() {

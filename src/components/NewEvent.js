@@ -68,7 +68,9 @@ class NewEvent extends Component {
     .then(res => res.json())
     .then(event => {
       this.props.createEvent(event)
-      this.state.attending === 'y' ? this.props.handleNewEventAttending(event, true) : this.props.handleNewEventAttending(event, false)
+      if (this.state.attending === 'y') {
+        this.props.attendEvent(event, 'attending')
+      }
     })
     this.props.history.push('/events')
   }
