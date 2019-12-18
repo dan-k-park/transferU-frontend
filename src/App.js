@@ -17,6 +17,7 @@ class App extends Component {
       users: [],
       schools: [],
       events: [],
+      displayEvents: [],
       joins: [],
       categories: [],
     }
@@ -50,7 +51,10 @@ class App extends Component {
     fetch(URL + '/events')
     .then(res => res.json())
     .then(events => {
-      this.setState({events: events})
+      this.setState({
+        events: events,
+        displayEvents: events
+      })
     })
   }
 
@@ -70,18 +74,16 @@ class App extends Component {
     })
   }
 
-  createUser = (name, imgUrl) => {
-    fetch(URL + '/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accepts: 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        imgUrl: imgUrl
+  filterEvents = categoryName => {
+    if (categoryName !== 'All') {
+      this.setState({
+        displayEvents: this.state.events.filter(event => event.category.name === categoryName)
       })
-    })
+    } else {
+      this.setState({
+        displayEvents: this.state.events
+      })
+    }
   }
 
   createEvent = event => {
@@ -148,17 +150,24 @@ class App extends Component {
     return (
       <Router>
         {/* {!this.state.loggedIn ? <FbLogin /> : <EventContainer events={this.state.events} />} */}
-        <Navbar currentUser={this.state.users[0]}/>
+        <Navbar 
+          currentUser={this.state.users[0]}
+          filterEvents={this.filterEvents}
+        />
         <Route 
           path='/events'
           exact
-          render={() =>  <EventContainer events={this.state.events} /> }
+          render={() =>  <EventContainer events={this.state.displayEvents} /> }
         />
 
         <Route 
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} createEvent={this.createEvent} attendEvent={this.attendEvent} school_address={this.state.users[0].school.address} categories={this.state.categories} />}
+          render={(props) => <NewEvent {...props} 
+          createEvent={this.createEvent} 
+          attendEvent={this.attendEvent} 
+          school_address={this.state.users[0].school.address} 
+          categories={this.state.categories} />}
         />
 
         <Route path='/events/:id' render={props => <EventDetail {...props} 
