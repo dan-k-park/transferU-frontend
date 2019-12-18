@@ -2,39 +2,34 @@ import React, { Component } from 'react';
 import EventLocationMap from './EventLocationMap';
 import { Segment, Button } from 'semantic-ui-react';
 
+const URL = 'http://localhost:3001'
+
 class EventDetail extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       event: {},
-      joins: null,
     }
-    this.eventId = this.props.match.params.id
   }
   
   componentDidMount() {
     this.setState({
       event: this.props.events.filter(event => event.id == this.props.match.params.id)[0],
-      joins: this.props.joins.filter(join => join.event_id == this.props.match.params.id )
     })
   }
 
   handleAttendClick = () => {
-    // if (this.state.joins.event_id === this.state.event_id) {
-    //   alert('You\'re already attending this event')
-    // } else 
-    if (!this.state.joins) {
-      this.props.handleEventAttending(this.state.join.id, true)
-    } else {
-      this.props.handleNewEventAttending(this.state.event, true)
-    }
+    const join = this.props.findJoin(this.state.event)
+    !join ? this.props.attendEvent(this.state.event, true)
+    : alert('You\'re already attending this event')
   }
 
   handleCancelClick = () => {
-    this.props.handleEventAttending(this.state.join.id, false)
+    const join = this.props.findJoin(this.state.event)
+    !join ? alert('You never RSVP\'d to this event')
+    : this.props.cancelAttending(join.id, true)
   }
-
 
   render() {
     const { name, date, description, location } = this.state.event

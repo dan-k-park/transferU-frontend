@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import NewEvent from './components/NewEvent';
 
-import FbLogin from './components/FbLogin';
 import EventContainer from './containers/EventContainer';
 import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
@@ -70,7 +69,11 @@ class App extends Component {
     this.setState({events: eventsCopy})
   }
 
-  handleNewEventAttending = (event, attending) => {
+  findJoin = event => {
+    return this.state.joins.find(join => join.event.name === event.name)
+  }
+
+  attendEvent = (event, attending) => {
       fetch(URL + '/event_users', {
         method: 'POST',
         headers: {
@@ -93,18 +96,9 @@ class App extends Component {
       })
     }
 
-  handleEventAttending = (id, attending) => {
+  cancelAttending = (id) => {
     fetch(URL + `/event_users/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Accepts: 'application/json'
-      },
-      body: JSON.stringify({
-        event_user: {
-          attending: attending,
-        }
-      })
+      method: 'DELETE'
     })
   }
   
@@ -122,11 +116,20 @@ class App extends Component {
         <Route 
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} createEvent={this.createEvent} handleNewEventAttending={this.handleNewEventAttending} school_address={this.state.users[0].school.address} />}
+          render={(props) => <NewEvent {...props} createEvent={this.createEvent} attendEvent={this.attendEvent} school_address={this.state.users[0].school.address} />}
         />
 
-        <Route path='/events/:id' render={props => <EventDetail {...props} events={this.state.events} joins={this.state.joins} handleNewEventAttending={this.handleNewEventAttending} handleEventAttending={this.handleEventAttending} />} />
-        <Route path='/users/:id' render={props => <UserProfile {...props} users={this.state.users} schools={this.state.schools} /> } />
+        <Route path='/events/:id' render={props => <EventDetail {...props} 
+          events={this.state.events} 
+          findJoin={this.findJoin}
+          attendEvent={this.attendEvent} 
+          cancelAttending={this.cancelAttending} />} 
+        />
+
+        <Route path='/users/:id' render={props => <UserProfile {...props} 
+          users={this.state.users} 
+          schools={this.state.schools} /> } 
+        />
       </Router>
     )
   }

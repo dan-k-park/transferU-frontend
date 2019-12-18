@@ -8,6 +8,7 @@ class EventCard extends Component {
     super(props);
     this.state = {
       event: {},
+      attendees: [],
       imgUrl: '',
       shortDesc: '',
       eventLoaded: false,
@@ -29,7 +30,7 @@ class EventCard extends Component {
     return (
       <>
         {this.state.eventLoaded ?
-          <Card>
+          <Card className='Border'>
             <Image src={ this.state.imgUrl } />
             <Card.Content header={this.state.event.name} />
             <Card.Content textAlign='left'>
