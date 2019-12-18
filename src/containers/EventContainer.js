@@ -15,7 +15,6 @@ const EventContainer = props => {
     <Container>
       <Grid centered>
         <br></br>
-        <Header size='huge'>Events at the University of Washington</Header>
         <Grid.Row columns={3}>
           <Card.Group centered itemsPerRow={3}>
             {renderEvents()}

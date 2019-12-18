@@ -1,6 +1,36 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import { Card, List, Icon, Image } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
+import { Card, List, Icon, Image } from 'semantic-ui-react';
+
+import academic from './imgs/academic.jpg';
+import athletic from './imgs/athletic.jpg';
+import outdoor from './imgs/outdoor.jpg';
+import social from './imgs/social.jpg';
+import other from './imgs/other.jpg'
+
+
+const imgs = [
+  {
+    'name': 'Academic',
+    'url': academic,
+  },
+  {
+    'name': 'Athletic',
+    'url': athletic,
+  },
+  {
+    'name': 'Outdoor',
+    'url': outdoor,
+  },
+  {
+    'name': 'Social',
+    'url': social,
+  },
+  {
+    'name': 'Other',
+    'url': other,
+  }
+]
 
 class EventCard extends Component {
 
@@ -16,7 +46,8 @@ class EventCard extends Component {
   }
 
   componentDidMount() {
-    const imgUrl = `https://picsum.photos/id/${Math.floor(Math.random() * 1084)}/200/300`;
+    const imgUrl = imgs.find(img => img.name === this.props.event.category.name).url
+    
     const shortDesc = this.props.event.description.slice(0, this.props.event.description.length * 0.7) + '...';
     this.setState({
       event: this.props.event,
