@@ -18,6 +18,7 @@ class App extends Component {
       schools: [],
       events: [],
       joins: [],
+      categories: [],
     }
   }
 
@@ -26,6 +27,7 @@ class App extends Component {
     this.getSchools()
     this.getEvents()
     this.getJoins()
+    this.getCategories()
   }
 
   getUsers = () => {
@@ -57,6 +59,14 @@ class App extends Component {
     .then(res => res.json())
     .then(joins => {
       this.setState({joins: joins})
+    })
+  }
+
+  getCategories = () => {
+    fetch(URL + '/categories')
+    .then(res => res.json())
+    .then(categories => {
+      this.setState({categories: categories})
     })
   }
 
@@ -148,14 +158,15 @@ class App extends Component {
         <Route 
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} createEvent={this.createEvent} attendEvent={this.attendEvent} school_address={this.state.users[0].school.address} />}
+          render={(props) => <NewEvent {...props} createEvent={this.createEvent} attendEvent={this.attendEvent} school_address={this.state.users[0].school.address} categories={this.state.categories} />}
         />
 
         <Route path='/events/:id' render={props => <EventDetail {...props} 
           events={this.state.events} 
           findJoin={this.findJoin}
           attendEvent={this.attendEvent} 
-          cancelAttending={this.cancelAttending} />} 
+          cancelAttending={this.cancelAttending} 
+          refreshJoins={this.getJoins} />} 
         />
 
         <Route path='/users/:id' render={props => <UserProfile {...props} 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { Card, Container, Icon, Image } from 'semantic-ui-react'
+import { Card, List, Icon, Image } from 'semantic-ui-react'
 
 class EventCard extends Component {
 

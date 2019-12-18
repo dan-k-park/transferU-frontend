@@ -4,6 +4,14 @@ import { Form, Container, Segment } from 'semantic-ui-react';
 
 const URL = 'http://localhost:3001'
 
+const categories = [
+  { key: 'out', text: 'Outdoor', value: 'Outdoor' },
+  { key: 'soc', text: 'Social', value: 'Social' },
+  { key: 'ath', text: 'Athletic', value: 'Athletic' },
+  { key: 'aca', text: 'Academic', value: 'Academic' },
+  { key: 'oth', text: 'Other', value: 'Other' },
+]
+
 class NewEvent extends Component {
   constructor() {
     super()
@@ -11,6 +19,7 @@ class NewEvent extends Component {
       name: '',
       date: '',
       attendees: 0,
+      category: '',
       description: '',
       location: '',
       attending: '',
@@ -44,8 +53,16 @@ class NewEvent extends Component {
     this.setState({attending: value})
   }
 
+  handleCategory =(evt, {value}) => this.setState({category: value})
+
+  findCategoryID = () => {
+    let idx = this.props.categories.findIndex(category => (category.name === this.state.category))
+    return this.props.categories[idx].id;
+  }
+
   handleSubmit = evt => {
     evt.preventDefault();
+    let category_id = this.findCategoryID();
     
     if (this.state.attending === 'y') {
       this.setState({attendees: 1})
@@ -62,6 +79,7 @@ class NewEvent extends Component {
         date: this.state.date,
         description: this.state.description,
         attendees: this.state.attendees,
+        category_id: category_id,
         location: this.state.location,
       })
     })
@@ -97,6 +115,12 @@ class NewEvent extends Component {
           </Segment>
 
           <Form.Group inline>
+            <Form.Select
+              label='Category'
+              options={categories}
+              placeholder='Category'
+              onChange={this.handleCategory}
+            />
             <label>Will You Be Attending?</label>
             <Form.Radio
               label='Yes'

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UserEvents from './UserEvents'
-import { Grid, Divider, Segment, Header } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Header, Container } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
 
@@ -69,12 +69,20 @@ class UserProfile extends Component {
             <Grid.Column width={4} textAlign={'left'}>
               <h2>{name} ({age})</h2>
               <h4>{school.name}</h4>
-              <p>{bio}</p>
             </Grid.Column>
           </Grid>
       </Segment>
       <Grid columns='equal'>
-        <Grid.Column width={10}>
+        <Grid.Column>
+            <Segment>
+              <Header size='large'>About Me</Header>
+              <Divider />
+              <Container textAlign='left'>
+                <p>{bio}</p>
+              </Container>
+            </Segment>
+          </Grid.Column>
+        <Grid.Column width={8}>
           <Segment>
             <Header size='large'>My Events</Header>
             <Divider />

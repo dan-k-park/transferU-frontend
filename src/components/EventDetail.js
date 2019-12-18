@@ -10,12 +10,14 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
+      contentLoaded: false,
     }
   }
   
   componentDidMount() {
     this.setState({
       event: this.props.events.filter(event => event.id == this.props.match.params.id)[0],
+      contentLoaded: true,
     })
   }
 
@@ -43,17 +45,20 @@ class EventDetail extends Component {
   handleCancelClick = () => {
     const join = this.props.findJoin(this.state.event)
     this.props.cancelAttending(this.state.event, join.id)
+    this.props.refreshJoins();
   }
 
   render() {
-    const { name, date, description, location } = this.state.event
+    const { name, date, description, location, category } = this.state.event
 
     return (      
-      <div className="ui two column centered grid">
+      <>
+        {this.state.contentLoaded ?
+        <div className="ui two column centered grid">
         <div className="column">
           <Segment.Group raised>
             <Segment textAlign='left'>
-              <h1>Event Name: {name}</h1>
+              <h1>Name: {name} {`(${category.name})`}</h1>
               <h1>When: {date}</h1>
               <h1>Descripton: </h1>
               <p>{description}</p>
@@ -71,6 +76,8 @@ class EventDetail extends Component {
           </Segment.Group>
         </div>
       </div>
+        : null}
+      </>
     )
   }
 }
