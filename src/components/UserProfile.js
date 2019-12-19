@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import UserEvents from './UserEvents'
 import { Grid, Divider, Segment, Header, Container } from 'semantic-ui-react'
 
+
 const square = { width: 175, height: 175 }
 
 const URL = 'http://localhost:3001'
@@ -67,8 +68,9 @@ class UserProfile extends Component {
               </Segment>
             </Grid.Column>
             <Grid.Column width={4} textAlign={'left'}>
+              <br></br>
               <h2>{name} ({age})</h2>
-              <h4>{school.name}</h4>
+              <h3>{school.name}</h3>
             </Grid.Column>
           </Grid>
       </Segment>
