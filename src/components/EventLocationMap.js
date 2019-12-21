@@ -3,7 +3,7 @@ import Geocode from "react-geocode";
 import { Container } from 'semantic-ui-react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
+const GOOGLE_MAPS_API_KEY = 'dingdongdoodilydoodoodilydoodilydoo'
 
 Geocode.setApiKey(GOOGLE_MAPS_API_KEY);
 // need to send user's school as a prop
