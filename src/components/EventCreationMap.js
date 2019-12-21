@@ -3,7 +3,9 @@ import Geocode from "react-geocode";
 import { Container } from 'semantic-ui-react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
-Geocode.setApiKey(ENV['KEY']);
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
+
+Geocode.setApiKey(GOOGLE_MAPS_API_KEY);
 // need to send user's school as a prop
 
 const style = {
@@ -12,7 +14,7 @@ const style = {
 }
 
 class EventCreationMap extends Component {
-
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -70,5 +72,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: ENV['KEY']
+  apiKey: GOOGLE_MAPS_API_KEY
 })(EventCreationMap);
