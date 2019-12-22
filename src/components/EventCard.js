@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, List, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image } from 'semantic-ui-react';
 
 import academic from './imgs/academic.jpg';
 import athletic from './imgs/athletic.jpg';

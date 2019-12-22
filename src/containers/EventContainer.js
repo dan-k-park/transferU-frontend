@@ -13,14 +13,10 @@ const EventContainer = props => {
 
   return (
     <Container>
-      <Grid centered>
-        <br></br>
-        <Grid.Row columns={3}>
-          <Card.Group centered itemsPerRow={3}>
-            {renderEvents()}
-          </Card.Group>
-        </Grid.Row>
-      </Grid>
+      <br></br>
+      <Card.Group itemsPerRow='3'>
+        {renderEvents()}
+      </Card.Group>
     </Container>
   )
 }
