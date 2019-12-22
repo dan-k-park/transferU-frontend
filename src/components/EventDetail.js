@@ -71,7 +71,7 @@ class EventDetail extends Component {
             </Segment>
             <Segment style={{height:'660px'}}>
               <h1>Where: {location}</h1>
-              <EventLocationMap location={location}/>
+              <EventLocationMap location={location} api={this.props.api}/>
             </Segment>
           </Segment.Group>
         </div>
