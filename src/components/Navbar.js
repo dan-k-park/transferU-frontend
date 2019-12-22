@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 
 import { Menu, Dropdown } from 'semantic-ui-react'
 
 
-class Navbar extends Component {
+const Navbar = props => {
 
   filterAcademic = () => {
     this.props.filterEvents('Academic')
@@ -30,7 +30,8 @@ class Navbar extends Component {
     this.props.filterEvents('All')
   }
 
-  render() {
+  const currentUser = props.currentUser;
+  const loggedIn = !!props.currentUser.id;
 
     return (
       <Menu secondary inverted size='massive' color='teal'>
@@ -47,20 +48,29 @@ class Navbar extends Component {
               <Dropdown.Item text='Other' onClick={this.filterOther}/>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown text={this.props.currentUser ? this.props.currentUser.name : 'User'}>
+          <Dropdown text={loggedIn ? currentUser.profile.name : null}>
+
+          {loggedIn ? (
             <Dropdown.Menu direction={'left'}>
               <Dropdown.Item as={Link} to='/users/1' text='My Profile' />
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Divider />
-              <Dropdown.Item>
-                <h3><a href='http://ditzbitz.com/sheephole.html' className='BlackText'>Logout</a></h3>
+              <Dropdown.Item text='Sign Out' 
+                onCLick={() => {
+                  props.handleLogout();
+                  props.history.push('/login')
+                }}>
               </Dropdown.Item>
             </Dropdown.Menu>
+
+          ) : (
+            <Menu.Item as={Link} to='/login'>Sign In</Menu.Item>
+          )}
+
           </Dropdown>
         </Menu.Item>
       </Menu>
     )
-  }
 }
 
 export default Navbar;

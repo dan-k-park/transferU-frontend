@@ -3,7 +3,7 @@ import Geocode from "react-geocode";
 import { Container } from 'semantic-ui-react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
-Geocode.setApiKey('dingdongdoodilydoodoodilydoodilydoo');
+Geocode.setApiKey('AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA');
 // need to send user's school as a prop
 
 const style = {
@@ -70,5 +70,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'dingdongdoodilydoodoodilydoodilydoo'
+  apiKey: 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
 })(EventCreationMap);

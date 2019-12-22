@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Login from './components/Login';
 import Navbar from './components/Navbar';
 import NewEvent from './components/NewEvent';
-
 import EventContainer from './containers/EventContainer';
 import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
+import { api } from '../services/api';
+
 import './App.css';
 
 const URL = 'http://localhost:3001'
@@ -14,22 +16,34 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      schools: [],
-      events: [],
-      displayEvents: [],
-      joins: [],
-      categories: [],
-    }
+      auth: {
+        user: {}
+      }
+    };
   }
 
   componentDidMount() {
-    this.getUsers()
-    this.getSchools()
-    this.getEvents()
-    this.getJoins()
-    this.getCategories()
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.auth.getCurrentUser().then(user => {
+        const updatedState = { ...this.state.auth, user: user};
+        this.setState({ auth: updatedState });
+      });
+    }
   }
+
+  // Login/logout methods
+  login = data => {
+    const updatedState = { ...this.state.auth, user: data };
+    localStorage.setItem('token', data.jwt);
+    this.setState({ auth: updatedState });
+  }
+
+  logout = () => {
+    localStorage.removeItem('token');
+    this.setState({ auth: { user:{} } });
+  }
+
 
   getUsers = () => {
     fetch(URL + '/users')
@@ -151,13 +165,21 @@ class App extends Component {
       <Router>
         {/* {!this.state.loggedIn ? <FbLogin /> : <EventContainer events={this.state.events} />} */}
         <Navbar 
-          currentUser={this.state.users[0]}
+          currentUser={this.state.auth.user}
+          handleLogout={this.logout}
           filterEvents={this.filterEvents}
+          handleLogout={this.logout}
         />
         <Route 
-          path='/events'
+          path='/'
           exact
           render={() =>  <EventContainer events={this.state.displayEvents} /> }
+        />
+
+        <Route
+          path='/login'
+          exact
+          render={props => <Login {...props} handleLogin={this.login} />}
         />
 
         <Route 
