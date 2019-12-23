@@ -5,6 +5,14 @@ import { Card, Container } from 'semantic-ui-react';
 
 class EventContainer extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      events: [],
+      displayEvents: [],
+    }
+  }
+
   // On componentDidMount, redirects to login if there're any login errors
   componentDidMount() {
     if (!localStorage.getItem('token')) {
@@ -13,10 +21,30 @@ class EventContainer extends Component {
       api.auth.getCurrentUser().then(user => {
         if (user.error) {
           this.props.history.push('/login')
+        } else {
+          api.events.getEvents().then(events => {
+            this.setState({
+              events: events,
+              displayEvents: events,
+            })
+          })
         }
       })
     }
   }
+
+  filterEvents = categoryName => {
+    if (categoryName !== 'All') {
+      this.setState({
+        displayEvents: this.state.events.filter(event => event.category.name === categoryName)
+      })
+    } else {
+      this.setState({
+        displayEvents: this.state.events
+      })
+    }
+  }
+
 
   // Pass in an add event method as a prop here
   // see mod 4 code challenge for reference

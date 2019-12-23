@@ -13,14 +13,30 @@ class UserProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: '',
-      age: '',
-      bio: '',
-      imgUrl: '',
+      profile: {},
       eventUserJoins: []
     }
     this.userId = this.props.match.params.id
   }
+
+  componentDidMount() {
+    if (!localStorage.getItem('token')) {
+      this.props.history.push('/login')
+    } else {
+      api.auth.getCurrentUser().then(user => {
+        if (user.error) {
+          this.props.history.push('/login')
+        } else {
+          api.profile.getUserProfile().then(profile => {
+            this.setState({
+              profile: profile
+            })
+          })
+        }
+      })
+    }
+  }
+
 
   componentDidMount() {
     fetch(URL + '/event_users')

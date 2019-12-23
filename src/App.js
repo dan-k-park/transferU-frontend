@@ -18,7 +18,12 @@ class App extends Component {
     this.state = {
       auth: {
         user: {}
-      }
+      },
+      profile: {},
+      events: [],
+      localEvents: [],
+      schools: [],
+      categories: [],
     };
   }
 
@@ -27,7 +32,27 @@ class App extends Component {
     if (token) {
       api.auth.getCurrentUser().then(user => {
         const updatedState = { ...this.state.auth, user: user};
-        this.setState({ auth: updatedState });
+
+        const profile = api.profile.getUserProfile(user);
+        const schools = api.schools.getSchools();
+        const categories = api.events.getCategories();
+
+        // Stretch goal is to allow users to view events at any other school
+        // thus, have all events and schools available in state
+        // schools are also going to be needed for registration purposes
+        const events = api.events.getEvents();
+
+        // Events local to the user's school
+        const localEvents = events.filter(event => event.school.id === profile.school.id)
+
+        this.setState({
+          auth: updatedState,
+          profile: profile,
+          events: events,
+          localEvents: localEvents,
+          schools: schools,
+          categories: categories,
+        });
       });
     }
   }
@@ -44,44 +69,6 @@ class App extends Component {
     this.setState({ auth: { user:{} } });
   }
 
-  getEvents = () => {
-    fetch(URL + '/events')
-    .then(res => res.json())
-    .then(events => {
-      this.setState({
-        events: events,
-        displayEvents: events
-      })
-    })
-  }
-
-  getJoins = () => {
-    fetch(URL + '/event_users')
-    .then(res => res.json())
-    .then(joins => {
-      this.setState({joins: joins})
-    })
-  }
-
-  getCategories = () => {
-    fetch(URL + '/categories')
-    .then(res => res.json())
-    .then(categories => {
-      this.setState({categories: categories})
-    })
-  }
-
-  filterEvents = categoryName => {
-    if (categoryName !== 'All') {
-      this.setState({
-        displayEvents: this.state.events.filter(event => event.category.name === categoryName)
-      })
-    } else {
-      this.setState({
-        displayEvents: this.state.events
-      })
-    }
-  }
 
   createEvent = event => {
     const eventsCopy = [...this.state.events]

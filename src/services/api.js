@@ -13,20 +13,32 @@ const getCurrentUser = () => {
   }).then(res => res.json());
 };
 
-const getUserProfile = () => {
+const getUserProfile = user => {
   fetch(`${API_ROOT}/profiles`, {headers: headers})
   .then(res => res.json())
   .then(profiles => {
-    profiles.find(profile => profile.user_id == getCurrentUser().id)
+    profiles.find(profile => profile.user_id == user.id)
   })
 }
 
+
 const getSchools = () => {
-  return fetch(URL + '/schools')
-  .then(res => res.json())
+  return fetch(`${API_ROOT}/schools`).then(res => res.json())
 }
 
+
 const getEvents = () => {
+  return fetch(`${API_ROOT}/events`).then(res => res.json())
+}
+
+const getJoins = () => {
+  return fetch(`${API_ROOT}/event_profiles`)
+  .then(res => res.json())
+
+}
+
+const getCategories = () => {
+  return fetch(`${API_ROOT}/categories`).then(res => res.json())
   
 }
 
@@ -46,5 +58,12 @@ export const api = {
   },
   profile: {
     getUserProfile
+  },
+  events: {
+    getEvents,
+    getCategories
+  },
+  schools: {
+    getSchools
   }
 };
