@@ -61,7 +61,8 @@ export const api = {
   },
   events: {
     getEvents,
-    getCategories
+    getCategories,
+    getJoins
   },
   schools: {
     getSchools

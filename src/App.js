@@ -22,8 +22,10 @@ class App extends Component {
       profile: {},
       events: [],
       localEvents: [],
+      displayLocalEvents: [],
       schools: [],
       categories: [],
+      joins: [],
     };
   }
 
@@ -45,6 +47,8 @@ class App extends Component {
         // Events local to the user's school
         const localEvents = events.filter(event => event.school.id === profile.school.id)
 
+        const joins = api.events.getJoins();
+
         this.setState({
           auth: updatedState,
           profile: profile,
@@ -52,6 +56,7 @@ class App extends Component {
           localEvents: localEvents,
           schools: schools,
           categories: categories,
+          joins: joins,
         });
       });
     }
@@ -66,9 +71,20 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem('token');
-    this.setState({ auth: { user:{} } });
+    this.setState({ auth: { user: {} } });
   }
 
+  filterEvents = categoryName => {
+    if (categoryName !== 'All') {
+      this.setState({
+        displayLocalEvents: this.state.localEvents.filter(event => event.category.name === categoryName)
+      })
+    } else {
+      this.setState({
+        displayLocalEvents: this.state.localEvents
+      })
+    }
+  }
 
   createEvent = event => {
     const eventsCopy = [...this.state.events]
@@ -143,7 +159,7 @@ class App extends Component {
         <Route 
           path='/'
           exact
-          render={() =>  <EventContainer events={this.state.displayEvents} /> }
+          render={() =>  <EventContainer events={this.state.displayLocalEvents} /> }
         />
 
         <Route
@@ -170,9 +186,8 @@ class App extends Component {
           refreshJoins={this.getJoins} />} 
         />
 
-        <Route path='/users/:id' render={props => <UserProfile {...props} 
-          users={this.state.users} 
-          schools={this.state.schools} /> } 
+        <Route path='/profile/:id' render={props => <UserProfile {...props} 
+          profile={this.state.profile} /> } 
         />
       </Router>
     )

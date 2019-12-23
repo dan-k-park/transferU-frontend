@@ -33,19 +33,6 @@ class EventContainer extends Component {
     }
   }
 
-  filterEvents = categoryName => {
-    if (categoryName !== 'All') {
-      this.setState({
-        displayEvents: this.state.events.filter(event => event.category.name === categoryName)
-      })
-    } else {
-      this.setState({
-        displayEvents: this.state.events
-      })
-    }
-  }
-
-
   // Pass in an add event method as a prop here
   // see mod 4 code challenge for reference
   renderEvents = () => {
