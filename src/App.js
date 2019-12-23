@@ -44,23 +44,6 @@ class App extends Component {
     this.setState({ auth: { user:{} } });
   }
 
-
-  getUsers = () => {
-    fetch(URL + '/users')
-    .then(res => res.json())
-    .then(users => {
-      this.setState({users: users})
-    })
-  }
-
-  getSchools = () => {
-    fetch(URL + '/schools')
-    .then(res => res.json())
-    .then(schools => {
-      this.setState({schools: schools})
-    })
-  }
-
   getEvents = () => {
     fetch(URL + '/events')
     .then(res => res.json())

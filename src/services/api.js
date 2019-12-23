@@ -1,4 +1,4 @@
-const API_ROOT = 'http://localhost:3000/api/v1'
+const API_ROOT = 'http://localhost:3001'
 const token = localStorage.getItem('token')
 
 const headers = {
@@ -7,11 +7,28 @@ const headers = {
   Authorization: token
 };
 
-const getPaintings = () => {
-  return fetch(`${API_ROOT}/paintings/`, { headers: headers }).then(res =>
-    res.json()
-  );
+const getCurrentUser = () => {
+  return fetch(`${API_ROOT}/current_user`, {
+    headers
+  }).then(res => res.json());
 };
+
+const getUserProfile = () => {
+  fetch(`${API_ROOT}/profiles`, {headers: headers})
+  .then(res => res.json())
+  .then(profiles => {
+    profiles.find(profile => profile.user_id == getCurrentUser().id)
+  })
+}
+
+const getSchools = () => {
+  return fetch(URL + '/schools')
+  .then(res => res.json())
+}
+
+const getEvents = () => {
+  
+}
 
 const login = data => {
   return fetch(`${API_ROOT}/auth`, {
@@ -21,18 +38,13 @@ const login = data => {
   }).then(res => res.json());
 };
 
-const getCurrentUser = () => {
-  return fetch(`${API_ROOT}/current_user`, {
-    headers
-  }).then(res => res.json());
-};
 
 export const api = {
   auth: {
     login,
     getCurrentUser
   },
-  paintings: {
-    getPaintings
+  profile: {
+    getUserProfile
   }
 };
