@@ -46,16 +46,6 @@ class UserProfile extends Component {
     })
   }
 
-  getUser = () => {
-    let userOutput = {name: this.state.name, age: this.state.age, bio: this.state.bio, imgUrl: this.state.imgUrl, school: {}}
-    this.props.users.forEach(user => {
-      if (user.id == this.userId) {
-        userOutput = user
-      }
-    })
-    return userOutput
-  }
-
   getUserEventsJoins = () => {
     return this.state.eventUserJoins.filter(join => join.user.id == this.props.match.params.id && join.attending === true );
   }
@@ -70,7 +60,7 @@ class UserProfile extends Component {
 
   render() {
 
-    const { name, age, bio, imgUrl, school } = this.getUser()
+    const { name, age, bio, imgUrl, school } = this.state.profile
 
     const userEvents = this.getUserEvents();
 

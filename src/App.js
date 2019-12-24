@@ -156,16 +156,17 @@ class App extends Component {
           filterEvents={this.filterEvents}
           handleLogout={this.logout}
         />
-        <Route 
-          path='/'
-          exact
-          render={() =>  <EventContainer events={this.state.displayLocalEvents} /> }
-        />
 
         <Route
           path='/login'
           exact
           render={props => <Login {...props} handleLogin={this.login} />}
+        />
+
+        <Route 
+          path='/'
+          exact
+          render={() =>  <EventContainer events={this.state.displayLocalEvents} /> }
         />
 
         <Route 

@@ -33,11 +33,13 @@ const Navbar = props => {
   const currentUser = props.currentUser;
   const loggedIn = !!props.currentUser.id;
 
-    return (
-      <Menu secondary inverted size='massive' color='teal'>
-        <Menu.Item as={Link} to='/events' onClick={this.unFilter}>
-          <h2 className='WhiteText'>TransferU</h2>
-        </Menu.Item>
+  return (
+    <Menu secondary inverted size='massive' color='teal'>
+      <Menu.Item as={Link} to='/events' onClick={this.unFilter}>
+        <h2 className='WhiteText'>TransferU</h2>
+      </Menu.Item>
+
+      {loggedIn ? (
         <Menu.Item position={'right'}>
           <Dropdown text='Filter'>
             <Dropdown.Menu direction={'left'} >
@@ -48,11 +50,9 @@ const Navbar = props => {
               <Dropdown.Item text='Other' onClick={this.filterOther}/>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown text={loggedIn ? currentUser.profile.name : null}>
-
-          {loggedIn ? (
+          <Dropdown text={currentUser.profile.name}>
             <Dropdown.Menu direction={'left'}>
-              <Dropdown.Item as={Link} to='/users/1' text='My Profile' />
+              <Dropdown.Item as={Link} to={`/profiles/${currentUser.profile.id}`} text='My Profile' />
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Divider />
               <Dropdown.Item text='Sign Out' 
@@ -62,15 +62,13 @@ const Navbar = props => {
                 }}>
               </Dropdown.Item>
             </Dropdown.Menu>
-
-          ) : (
-            <Menu.Item as={Link} to='/login'>Sign In</Menu.Item>
-          )}
-
           </Dropdown>
         </Menu.Item>
-      </Menu>
-    )
+        ) : (
+          <Menu.Item as={Link} to='/login'>Sign In</Menu.Item>
+        )}
+    </Menu>
+  )
 }
 
 export default Navbar;

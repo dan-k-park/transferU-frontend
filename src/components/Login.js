@@ -16,7 +16,7 @@ class Login extends Component {
   }
 
   handleChange = evt => {
-    const newFields = { ...this.state.fields, [e.target.name]: e.target.value };
+    const newFields = { ...this.state.fields, [evt.target.name]: evt.target.value };
     this.setState({ fields: newFields });
   }
 
@@ -39,6 +39,7 @@ class Login extends Component {
     return(
       <Container>
         <Segment raised>
+          {this.state.error ? <h1>Try again...</h1> : null}
           <Form onSubmit={this.handleSubmit}>
             <Form.Input  
               name="username"
