@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import UserEvents from './UserEvents'
+import { api } from '../services/api';
+
 import { Grid, Divider, Segment, Header, Container } from 'semantic-ui-react'
 
 
@@ -17,24 +19,6 @@ class UserProfile extends Component {
       eventUserJoins: []
     }
     this.userId = this.props.match.params.id
-  }
-
-  componentDidMount() {
-    if (!localStorage.getItem('token')) {
-      this.props.history.push('/login')
-    } else {
-      api.auth.getCurrentUser().then(user => {
-        if (user.error) {
-          this.props.history.push('/login')
-        } else {
-          api.profile.getUserProfile().then(profile => {
-            this.setState({
-              profile: profile
-            })
-          })
-        }
-      })
-    }
   }
 
 

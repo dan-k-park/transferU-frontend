@@ -15,30 +15,23 @@ class EventContainer extends Component {
 
   // On componentDidMount, redirects to login if there're any login errors
   componentDidMount() {
-    if (!localStorage.getItem('token')) {
-      this.props.history.push('/login')
-    } else {
-      api.auth.getCurrentUser().then(user => {
-        if (user.error) {
-          this.props.history.push('/login')
-        } else {
-          api.events.getEvents().then(events => {
-            this.setState({
-              events: events,
-              displayEvents: events,
-            })
-          })
-        }
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.setState({
+        events: this.props.events,
+        displayEvents: this.props.displayEvents,
       })
+    } else {
+      this.props.history.push('/login')
     }
   }
 
   // Pass in an add event method as a prop here
   // see mod 4 code challenge for reference
   renderEvents = () => {
-     return props.events.map(event => {
-       return <EventCard key={event.id} event={event} />
-     })
+    //  return this.state.events.map(event => {
+    //    return <EventCard key={event.id} event={event} />
+    //  })
   }
 
   render() {
@@ -46,7 +39,7 @@ class EventContainer extends Component {
       <Container>
         <br></br>
         <Card.Group itemsPerRow='3'>
-          {renderEvents()}
+          {this.renderEvents()}
         </Card.Group>
       </Container>
     )

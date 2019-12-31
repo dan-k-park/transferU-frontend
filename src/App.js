@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from './components/Login';
+import Register from './components/Register';
 import Navbar from './components/Navbar';
 import NewEvent from './components/NewEvent';
 import EventContainer from './containers/EventContainer';
 import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
-import { api } from '../services/api';
+import { api } from './services/api';
 
 import './App.css';
 
@@ -16,9 +17,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      auth: {
-        user: {}
-      },
+      currentUser: {},
       profile: {},
       events: [],
       localEvents: [],
@@ -33,30 +32,21 @@ class App extends Component {
     const token = localStorage.getItem('token');
     if (token) {
       api.auth.getCurrentUser().then(user => {
-        const updatedState = { ...this.state.auth, user: user};
-
-        const profile = api.profile.getUserProfile(user);
-        const schools = api.schools.getSchools();
-        const categories = api.events.getCategories();
+        // const schools = api.schools.getSchools();
+        // const categories = api.events.getCategories();
 
         // Stretch goal is to allow users to view events at any other school
         // thus, have all events and schools available in state
         // schools are also going to be needed for registration purposes
-        const events = api.events.getEvents();
+        // const events = api.events.getEvents();
 
         // Events local to the user's school
-        const localEvents = events.filter(event => event.school.id === profile.school.id)
+        // const localEvents = events.filter(event => event.school.id === profile.school.id)
 
-        const joins = api.events.getJoins();
+        // const joins = api.events.getJoins();
 
         this.setState({
-          auth: updatedState,
-          profile: profile,
-          events: events,
-          localEvents: localEvents,
-          schools: schools,
-          categories: categories,
-          joins: joins,
+          currentUser: user,
         });
       });
     }
@@ -64,14 +54,13 @@ class App extends Component {
 
   // Login/logout methods
   login = data => {
-    const updatedState = { ...this.state.auth, user: data };
     localStorage.setItem('token', data.jwt);
-    this.setState({ auth: updatedState });
+    this.setState({ currentUser: data });
   }
 
   logout = () => {
     localStorage.removeItem('token');
-    this.setState({ auth: { user: {} } });
+    this.setState({ currentUser: null });
   }
 
   filterEvents = categoryName => {
@@ -108,6 +97,7 @@ class App extends Component {
       body: JSON.stringify({
         event_user: {
           user_id: this.state.users[0].id,
+
           event_id: event.id,
           attending: attending,
         }
@@ -149,9 +139,9 @@ class App extends Component {
   render() {
     return (
       <Router>
-        {/* {!this.state.loggedIn ? <FbLogin /> : <EventContainer events={this.state.events} />} */}
         <Navbar 
-          currentUser={this.state.auth.user}
+          currentUser={this.state.currentUser}
+          profile={this.state.profile}
           handleLogout={this.logout}
           filterEvents={this.filterEvents}
           handleLogout={this.logout}
@@ -163,10 +153,16 @@ class App extends Component {
           render={props => <Login {...props} handleLogin={this.login} />}
         />
 
+        <Route
+          path='/register'
+          exact
+          render={props => <Register {...props} />}
+        />
+
         <Route 
           path='/'
           exact
-          render={() =>  <EventContainer events={this.state.displayLocalEvents} /> }
+          render={props =>  <EventContainer {...props} events={this.state.localEvents} displayEvents={this.state.displayLocalEvents} /> }
         />
 
         <Route 

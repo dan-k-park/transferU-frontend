@@ -1,41 +1,41 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import { Menu, Dropdown } from 'semantic-ui-react'
 
 
 const Navbar = props => {
 
-  filterAcademic = () => {
-    this.props.filterEvents('Academic')
+  const filterAcademic = () => {
+    props.filterEvents('Academic')
   }
 
-  filterAthletic = () => {
-    this.props.filterEvents('Athletic')
+  const filterAthletic = () => {
+    props.filterEvents('Athletic')
   }
 
-  filterOutdoor = () => {
-    this.props.filterEvents('Outdoor')
+  const filterOutdoor = () => {
+    props.filterEvents('Outdoor')
   }
 
-  filterSocial = () => {
-    this.props.filterEvents('Social')
+  const filterSocial = () => {
+    props.filterEvents('Social')
   }
 
-  filterOther = () => {
-    this.props.filterEvents('Other')
+  const filterOther = () => {
+    props.filterEvents('Other')
   }
 
-  unFilter = () => {
-    this.props.filterEvents('All')
+  const unFilter = () => {
+    props.filterEvents('All')
   }
 
   const currentUser = props.currentUser;
-  const loggedIn = !!props.currentUser.id;
+  const loggedIn = !!currentUser;
 
   return (
     <Menu secondary inverted size='massive' color='teal'>
-      <Menu.Item as={Link} to='/events' onClick={this.unFilter}>
+      <Menu.Item as={Link} to='/events' onClick={unFilter}>
         <h2 className='WhiteText'>TransferU</h2>
       </Menu.Item>
 
@@ -43,20 +43,22 @@ const Navbar = props => {
         <Menu.Item position={'right'}>
           <Dropdown text='Filter'>
             <Dropdown.Menu direction={'left'} >
-              <Dropdown.Item text='Academic' onClick={this.filterAcademic}/>
-              <Dropdown.Item text='Athletic' onClick={this.filterAthletic}/>
-              <Dropdown.Item text='Outdoor' onClick={this.filterOutdoor}/>
-              <Dropdown.Item text='Social' onClick={this.filterSocial}/>
-              <Dropdown.Item text='Other' onClick={this.filterOther}/>
+              <Dropdown.Item text='Academic' onClick={filterAcademic}/>
+              <Dropdown.Item text='Athletic' onClick={filterAthletic}/>
+              <Dropdown.Item text='Outdoor' onClick={filterOutdoor}/>
+              <Dropdown.Item text='Social' onClick={filterSocial}/>
+              <Dropdown.Item text='Other' onClick={filterOther}/>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown text={currentUser.profile.name}>
+          {/* <Dropdown text={currentUser.profile.name}> */}
+          <Dropdown text={currentUser.username}>
             <Dropdown.Menu direction={'left'}>
-              <Dropdown.Item as={Link} to={`/profiles/${currentUser.profile.id}`} text='My Profile' />
+              {/* <Dropdown.Item as={Link} to={`/profiles/${currentUser.profile.id}`} text='My Profile' /> */}
+              <Dropdown.Item as={Link} to={`/profiles/${1}`} text='My Profile' />
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Divider />
               <Dropdown.Item text='Sign Out' 
-                onCLick={() => {
+                onClick={() => {
                   props.handleLogout();
                   props.history.push('/login')
                 }}>
@@ -65,10 +67,10 @@ const Navbar = props => {
           </Dropdown>
         </Menu.Item>
         ) : (
-          <Menu.Item as={Link} to='/login'>Sign In</Menu.Item>
+          null
         )}
     </Menu>
   )
 }
 
-export default Navbar;
+export default withRouter(Navbar);
