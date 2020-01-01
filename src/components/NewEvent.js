@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import EventCreationMap from './EventCreationMap';
-import { api } from '../services/api';
 import { Form, Container, Segment } from 'semantic-ui-react';
 
 const URL = 'http://localhost:3001'
@@ -73,7 +72,8 @@ class NewEvent extends Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accepts: 'application/json'
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         name: this.state.name,

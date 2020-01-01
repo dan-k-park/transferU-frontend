@@ -42,14 +42,14 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Form.Input  
               name="username"
-              placeholder="username"
+              placeholder="Username"
               value={fields.username}
               onChange={this.handleChange}
             />
             <Form.Input
               name="password"
               type="password"
-              placeholder="password"
+              placeholder="Password"
               value={fields.password}
               onChange={this.handleChange}
             />

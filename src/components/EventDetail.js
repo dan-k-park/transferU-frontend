@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import EventLocationMap from './EventLocationMap';
 import { Segment, Button } from 'semantic-ui-react';
 
-const URL = 'http://localhost:3001'
-
 class EventDetail extends Component {
 
   constructor(props) {

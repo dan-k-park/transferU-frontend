@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import UserEvents from './UserEvents'
-import { api } from '../services/api';
+import UserEvents from './UserEvents';
+import { Link } from 'react-router-dom';
 
-import { Grid, Divider, Segment, Header, Image, Container } from 'semantic-ui-react'
-
+import { Grid, Button, Divider, Segment, Header, Image, Container } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
-
-const URL = 'http://localhost:3001'
 
 class UserProfile extends Component {
   
@@ -53,6 +50,11 @@ class UserProfile extends Component {
                   <br></br>
                   <h2>{this.state.profile.name} ({this.state.profile.age})</h2>
                   <h3>{this.state.profile.school.name}</h3>
+                </Grid.Column>
+                <Grid.Column width={4} floated='right'>
+                  <Button as={Link} to={`/edit_profile/${this.state.profile.id}`} color='teal' floated='right'>
+                    Edit Profile
+                  </Button>
                 </Grid.Column>
               </Grid>
           </Segment>

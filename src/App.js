@@ -7,6 +7,7 @@ import NewEvent from './components/NewEvent';
 import EventContainer from './containers/EventContainer';
 import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
+import EditProfile from './components/EditProfile';
 import { api } from './services/api';
 
 import './App.css';
@@ -206,7 +207,7 @@ class App extends Component {
           render={(props) => <NewEvent {...props} 
           createEvent={this.createEvent} 
           attendEvent={this.attendEvent} 
-          school_address={this.state.users[0].school.address} 
+          school_address={this.state.profile.school.address} 
           categories={this.state.categories} />}
         />
 
@@ -221,6 +222,11 @@ class App extends Component {
         <Route path='/profiles/:id' render={props => <UserProfile {...props} 
           profile={this.state.profile} 
           joins={this.state.joins}
+          /> } 
+        />
+
+        <Route path='/edit_profile/:id' render={props => <EditProfile {...props}
+          profile={this.state.profile}
           /> } 
         />
       </Router>
