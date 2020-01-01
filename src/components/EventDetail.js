@@ -10,42 +10,35 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
+      join: {},
       contentLoaded: false,
     }
   }
   
   componentDidMount() {
+    const event = this.props.events.filter(event => event.id == this.props.match.params.id)[0]
+    const join = this.props.findJoin(event)
     this.setState({
-      event: this.props.events.filter(event => event.id == this.props.match.params.id)[0],
+      event: event,
+      join: join,
       contentLoaded: true,
     })
   }
 
-  adjustAttendeeCount = (id, action) => {
-    const adjustedAttendees = this.state.event.attendees;
-    action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
-    fetch(URL + `/${id}`,{
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Accepts: 'application/json'
-      },
-      body: JSON.stringify({
-        attendees: adjustedAttendees
-      })
-    })
-  }
-
   handleAttendClick = () => {
-    const join = this.props.findJoin(this.state.event)
-    !join ? this.props.attendEvent(this.state.event, true)
-    : alert('You\'re already attending this event')
+    if (this.state.join) {
+      alert('You\'re already attending this event')
+    } else {
+      this.props.attendEvent(this.state.event, true)
+    }
   }
 
   handleCancelClick = () => {
-    const join = this.props.findJoin(this.state.event)
-    this.props.cancelAttending(this.state.event, join.id)
-    this.props.refreshJoins();
+    if (this.state.join) {
+      this.props.cancelAttending(this.state.event, this.state.join.id)
+    } else {
+      alert('You never signed up for this event')
+    }
   }
 
   render() {

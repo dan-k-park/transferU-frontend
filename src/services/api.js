@@ -17,7 +17,7 @@ const getUserProfile = user => {
   return fetch(`${API_ROOT}/profiles`, {headers: headers})
   .then(res => res.json())
   .then(profiles => {
-    profiles.find(profile => profile.user.id == user.id)
+    return profiles.find(profile => profile.user.id === user.id)
   })
 }
 
@@ -25,14 +25,20 @@ const getSchools = () => {
   return fetch(`${API_ROOT}/schools`, {headers: headers}).then(res => res.json())
 }
 
-
-const getEvents = () => {
-  return fetch(`${API_ROOT}/events`, {headers: headers}).then(res => res.json())
+const getEvents = school => {
+  return fetch(`${API_ROOT}/events`, {headers: headers})
+  .then(res => res.json())
+  .then(events => {
+    return events.filter(event => event.school.id === school.id)
+  })
 }
 
-const getJoins = () => {
+const getJoins = profile => {
   return fetch(`${API_ROOT}/event_profiles`, {headers: headers})
   .then(res => res.json())
+  .then(joins => {
+    return joins.filter(join => join.profile.id === profile.id )
+  })
 
 }
 

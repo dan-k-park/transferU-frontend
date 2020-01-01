@@ -35,7 +35,7 @@ const Navbar = props => {
 
   return (
     <Menu secondary inverted size='massive' color='teal'>
-      <Menu.Item as={Link} to='/events' onClick={unFilter}>
+      <Menu.Item as={Link} to='/' onClick={unFilter}>
         <h2 className='WhiteText'>TransferU</h2>
       </Menu.Item>
 
@@ -54,7 +54,7 @@ const Navbar = props => {
           <Dropdown text={currentUser.username}>
             <Dropdown.Menu direction={'left'}>
               {/* <Dropdown.Item as={Link} to={`/profiles/${currentUser.profile.id}`} text='My Profile' /> */}
-              <Dropdown.Item as={Link} to={`/profiles/${1}`} text='My Profile' />
+              <Dropdown.Item as={Link} to={`/profiles/${props.profile.id}`} text='My Profile' />
               <Dropdown.Item as={Link} to='/new_event' text='New Event' />
               <Dropdown.Divider />
               <Dropdown.Item text='Sign Out' 

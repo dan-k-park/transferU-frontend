@@ -20,9 +20,7 @@ class App extends Component {
       currentUser: {},
       profile: {},
       events: [],
-      localEvents: [],
-      displayLocalEvents: [],
-      schools: [],
+      displayEvents: [],
       categories: [],
       joins: [],
     };
@@ -32,23 +30,31 @@ class App extends Component {
     const token = localStorage.getItem('token');
     if (token) {
       api.auth.getCurrentUser().then(user => {
-        // const schools = api.schools.getSchools();
-        // const categories = api.events.getCategories();
-
-        // Stretch goal is to allow users to view events at any other school
-        // thus, have all events and schools available in state
-        // schools are also going to be needed for registration purposes
-        // const events = api.events.getEvents();
-
-        // Events local to the user's school
-        // const localEvents = events.filter(event => event.school.id === profile.school.id)
-
-        // const joins = api.events.getJoins();
-
+        const profile = api.profile.getUserProfile(user)
+        this.setState({ currentUser: user });
+        return profile
+      })
+      .then(profile => {
+        const categories = api.events.getCategories()
+        this.setState({ profile: profile })
+        return categories
+      })
+      .then(categories => {
+        const events = api.events.getEvents(this.state.profile.school);
+        this.setState({ categories: categories })
+        return events
+      })
+      .then(events => {
+        const joins = api.events.getJoins(this.state.profile)
         this.setState({
-          currentUser: user,
-        });
-      });
+          events: events,
+          displayEvents: events
+        })
+        return joins
+      })
+      .then(joins => {
+        this.setState({ joins: joins })
+      })
     }
   }
 
@@ -60,17 +66,24 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem('token');
-    this.setState({ currentUser: null });
+    this.setState({ 
+      currentUser: {},
+      profile: {},
+      events: [],
+      displayEvents: [],
+      categories: [],
+      joins: [],
+    });
   }
 
   filterEvents = categoryName => {
     if (categoryName !== 'All') {
       this.setState({
-        displayLocalEvents: this.state.localEvents.filter(event => event.category.name === categoryName)
+        displayEvents: this.state.events.filter(event => event.category.name === categoryName)
       })
     } else {
       this.setState({
-        displayLocalEvents: this.state.localEvents
+        displayEvents: this.state.events
       })
     }
   }
@@ -83,21 +96,21 @@ class App extends Component {
   }
 
   findJoin = event => {
-    return this.state.joins.find(join => join.event.name === event.name)
+    return this.state.joins.find(join => join.event.id === event.id)
   }
 
   attendEvent = (event, attending) => {
     this.adjustAttendeeCount(event, 'attend')
-    fetch(URL + '/event_users', {
+    fetch(URL + '/event_profiles', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accepts: 'application/json'
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
-        event_user: {
-          user_id: this.state.users[0].id,
-
+        event_profile: {
+          profile_id: this.state.profile.id,
           event_id: event.id,
           attending: attending,
         }
@@ -114,25 +127,48 @@ class App extends Component {
   adjustAttendeeCount = (event, action) => {
     let adjustedAttendees = event.attendees;
     action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
+    if (adjustedAttendees < 0) {
+      adjustedAttendees = 0;
+    }
     fetch(URL + `/events/${event.id}`,{
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Accepts: 'application/json'
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         attendees: adjustedAttendees
       })
     })
     .then(() => {
-      this.getEvents();
+      return api.events.getEvents(this.state.profile.school)
+    })
+    .then(events => {
+      this.setState({
+        events: events,
+        displayEvents: events,
+      })
     })
   }
 
   cancelAttending = (event, id) => {
     this.adjustAttendeeCount(event, 'cancel')
-    fetch(URL + `/event_users/${id}`, {
-      method: 'DELETE'
+    fetch(URL + `/event_profiles/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(() => {
+      return api.events.getJoins(this.state.profile)
+    })
+    .then(joins => {
+      this.setState({
+        joins: joins
+      })
     })
   }
   
@@ -142,7 +178,6 @@ class App extends Component {
         <Navbar 
           currentUser={this.state.currentUser}
           profile={this.state.profile}
-          handleLogout={this.logout}
           filterEvents={this.filterEvents}
           handleLogout={this.logout}
         />
@@ -162,7 +197,7 @@ class App extends Component {
         <Route 
           path='/'
           exact
-          render={props =>  <EventContainer {...props} events={this.state.localEvents} displayEvents={this.state.displayLocalEvents} /> }
+          render={props =>  <EventContainer {...props} events={this.state.displayEvents} /> }
         />
 
         <Route 
@@ -183,8 +218,10 @@ class App extends Component {
           refreshJoins={this.getJoins} />} 
         />
 
-        <Route path='/profile/:id' render={props => <UserProfile {...props} 
-          profile={this.state.profile} /> } 
+        <Route path='/profiles/:id' render={props => <UserProfile {...props} 
+          profile={this.state.profile} 
+          joins={this.state.joins}
+          /> } 
         />
       </Router>
     )
