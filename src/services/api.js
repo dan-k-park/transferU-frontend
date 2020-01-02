@@ -55,11 +55,31 @@ const login = data => {
   }).then(res => res.json());
 };
 
-const register = data => {
-  return fetch(`${API_ROOT}/login`, {
+const register = (user, profile) => {
+  return fetch(`${API_ROOT}/register`, {
     method: 'POST',
     headers,
-    body: JSON.stringify({user: data})
+    body: JSON.stringify({user: user})
+  }).then(res => res.json())
+  .then(user => {
+    debugger
+    createProfile(user, profile);
+    return user;
+  });
+};
+
+const createProfile = (user, profile) => {
+  return fetch(`${API_ROOT}/profiles`, {
+    method: 'POST',
+    headers,
+    body:JSON.stringify({
+      name: profile.name,
+      age: profile.age,
+      bio: profile.bio,
+      avatarURL: profile.avatarURL,
+      user_id: user.user.id,
+      school_id: profile.school_id
+    })
   }).then(res => res.json());
 };
 

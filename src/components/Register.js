@@ -71,7 +71,6 @@ class Register extends Component {
       age: '',
       bio: '',
       avatarURL: '',
-      user_id: null,
       school_id: null,
     }
   }
@@ -122,11 +121,7 @@ class Register extends Component {
       school_id: this.state.school_id,
     }
 
-    api.auth.register(newUser).then(user => {
-      api.profile.createProfile(user, newProfile);
-      return user
-    })
-    .then(user => {
+    api.auth.register(newUser, newProfile).then(user => {
       this.props.handleLogin(user);
       this.props.history.push('/')
     })

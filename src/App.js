@@ -60,9 +60,9 @@ class App extends Component {
   }
 
   // Login/logout methods
-  login = data => {
-    localStorage.setItem('token', data.jwt);
-    this.setState({ currentUser: data });
+  login = user => {
+    localStorage.setItem('token', user.jwt);
+    this.setState({ currentUser: user });
   }
 
   logout = () => {

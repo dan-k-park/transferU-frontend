@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Container, Segment } from 'semantic-ui-react';
 
+const API_ROOT = 'http://localhost:3001'
 
 class EditProfile extends Component {
 
@@ -24,14 +25,15 @@ class EditProfile extends Component {
     })
   }
 
-  handleChange = evt => {
-    this.setState({ [evt.target.name]: evt.target.value });
-  }
+  handleName = evt => this.setState({ name: evt.target.value });
+  handleAge = evt => this.setState({ age: evt.target.value });
+  handleBio = evt => this.setState({ bio: evt.target.value });
+  handleAvatarURL = evt => this.setState({ avatarURL: evt.target.value });
 
   handleSubmit = evt => {
     evt.preventDefault();
 
-    fetch(URL + `/profiles/${this.props.profile.id}`, {
+    fetch(API_ROOT + `/profiles/${this.props.profile.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -46,28 +48,25 @@ class EditProfile extends Component {
       })
     })
     .then(() => {
-      this.props.history.push(`/profiles/${this.props.profile.id}`)
+      this.props.history.push(`/`)
     })
   }
 
   render() {
-    const { name, age, bio, avatarURL } = this.state;
 
     return (
       <Container>
         <Segment raised>
           <Form onSubmit={this.handleSubmit}>
           <Form.Group widths='equal'>
-            <Form.Input label='Name' name={name} placeholder={name} value={name} onChange={this.handleChange} />
-            <Form.Input label='Age' name={age} type='number' value={age} onChange={this.handleChange} />
-            <Form.Input label='Profile Picture' name={avatarURL} placeholder={avatarURL} value={avatarURL} onChange={this.handleChange} />
+          <Form.Input label='Name' placeholder={this.state.name} onChange={this.handleName} />
+            <Form.Input label='Age' type='number' placeholder={this.state.age} onChange={this.handleAge} />
+            <Form.Input label='Profile Picture' placeholder={this.state.avatarURL} onChange={this.handleAvatarURL} />
           </Form.Group>
           <Form.TextArea 
             label='Bio' 
-            name={bio}
-            placeholder={bio}
-            value={bio}
-            onChange={this.handleChange}
+            placeholder={this.state.bio}
+            onChange={this.handleBio}
           />
           <Form.Button>Submit</Form.Button>
         </Form>
