@@ -279,6 +279,7 @@ class App extends Component {
         />
 
         <Route path='/profiles/:id' render={props => <UserProfile {...props} 
+          currentUser={this.state.currentUser}
           profile={this.state.profile} 
           joins={this.state.joins}
           events={this.state.events}

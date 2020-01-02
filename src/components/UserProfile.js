@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import UserEvent from './UserEvent';
 import { Link } from 'react-router-dom';
-
+import { api } from '../services/api';
 import { Grid, Button, Divider, Segment, Header, Image, Container, Tab } from 'semantic-ui-react'
+
+const API_ROOT = 'http://localhost:3001'
+
+
 
 const square = { width: 175, height: 175 }
 
@@ -19,11 +23,20 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      profile: this.props.profile,
+    fetch(`${API_ROOT}/profiles`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    }).then(res => res.json())
+    .then(profiles => {
+     this.setState({
+      profile: profiles.find(profile => profile.id == this.props.match.params.id),
       joins: this.props.joins,
       createdEvents: this.props.events.filter(event => event.user.id === this.props.profile.user.id),
       contentLoaded: true,
+    })
     })
   }
 
@@ -59,9 +72,11 @@ class UserProfile extends Component {
                   <h3>{this.state.profile.school.name}</h3>
                 </Grid.Column>
                 <Grid.Column width={4} floated='right'>
+                  {this.props.currentUser.id === this.state.profile.id ? 
                   <Button as={Link} to={`/edit_profile/${this.state.profile.id}`} color='teal' floated='right'>
                     Edit Profile
                   </Button>
+                  : null }
                 </Grid.Column>
               </Grid>
           </Segment>

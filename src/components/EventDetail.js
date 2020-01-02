@@ -11,7 +11,7 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
-      creatorName: '',
+      creatorProfile: '',
       join: {},
       contentLoaded: false,
     }
@@ -24,7 +24,7 @@ class EventDetail extends Component {
     api.profile.getUserProfile(event.user).then(profile => {
       this.setState({
         event: event,
-        creatorName: profile.name,
+        creatorProfile: profile,
         join: join,
         contentLoaded: true,
       })
@@ -67,7 +67,7 @@ class EventDetail extends Component {
           <Segment.Group raised>
             <Segment textAlign='left'>
               <h1>Name: {name} {`(${category.name})`}</h1>
-              <h1>Created by: {this.state.creatorName}</h1>
+              <h1>Created by: <Link to={`/profiles/${this.state.creatorProfile.id}`} className='BlackText'>{this.state.creatorProfile.name}</Link></h1>
               <h1>When: {date}</h1>
               <h1>Descripton: </h1>
               <p>{description}</p>
