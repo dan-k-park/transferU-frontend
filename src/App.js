@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
 import NewEvent from './components/NewEvent';
+import EditEvent from './components/EditEvent';
 import EventContainer from './containers/EventContainer';
 import EventDetail from './components/EventDetail';
 import UserProfile from './components/UserProfile';
@@ -12,7 +13,7 @@ import { api } from './services/api';
 
 import './App.css';
 
-const URL = 'http://localhost:3001'
+const API_ROOT = 'http://localhost:3001'
 
 class App extends Component {
   constructor() {
@@ -22,6 +23,7 @@ class App extends Component {
       profile: {},
       events: [],
       displayEvents: [],
+      eventToEdit: {},
       categories: [],
       joins: [],
     };
@@ -100,9 +102,26 @@ class App extends Component {
     return this.state.joins.find(join => join.event.id === event.id)
   }
 
+  getEventToEdit = id => {
+    this.setState({
+      eventToEdit: this.state.events.find(event => event.id === id)
+    })
+  }
+
+  deleteEvent = id => {
+    fetch(API_ROOT + `/events/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+  }
+
   attendEvent = (event, attending) => {
     this.adjustAttendeeCount(event, 'attend')
-    fetch(URL + '/event_profiles', {
+    fetch(API_ROOT + '/event_profiles', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +150,7 @@ class App extends Component {
     if (adjustedAttendees < 0) {
       adjustedAttendees = 0;
     }
-    fetch(URL + `/events/${event.id}`,{
+    fetch(API_ROOT + `/events/${event.id}`,{
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -155,7 +174,7 @@ class App extends Component {
 
   cancelAttending = (event, id) => {
     this.adjustAttendeeCount(event, 'cancel')
-    fetch(URL + `/event_profiles/${id}`, {
+    fetch(API_ROOT + `/event_profiles/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -208,25 +227,38 @@ class App extends Component {
           createEvent={this.createEvent} 
           attendEvent={this.attendEvent} 
           school_address={this.state.profile.school.address} 
-          categories={this.state.categories} />}
+          categories={this.state.categories} 
+          currentUser={this.state.currentUser}
+          profile={this.state.profile}
+          />}
         />
 
         <Route path='/events/:id' render={props => <EventDetail {...props} 
           events={this.state.events} 
+          currentUser={this.state.currentUser}
           findJoin={this.findJoin}
           attendEvent={this.attendEvent} 
           cancelAttending={this.cancelAttending} 
-          refreshJoins={this.getJoins} />} 
+          refreshJoins={this.getJoins} 
+          deleteEvent={this.deleteEvent}
+          editEvent={this.getEventToEdit} />} 
         />
 
         <Route path='/profiles/:id' render={props => <UserProfile {...props} 
           profile={this.state.profile} 
           joins={this.state.joins}
+          events={this.state.events}
           /> } 
         />
 
         <Route path='/edit_profile/:id' render={props => <EditProfile {...props}
           profile={this.state.profile}
+          /> } 
+        />
+
+        <Route path='/edit_event/:id' render={props => <EditEvent {...props}
+          categories={this.state.categories} 
+          event={this.state.eventToEdit}
           /> } 
         />
       </Router>

@@ -12,28 +12,31 @@ const categories = [
   { key: 'oth', text: 'Other', value: 'Other' },
 ]
 
-class NewEvent extends Component {
+class EditEvent extends Component {
   constructor() {
     super()
     this.state = {
       name: '',
       date: '',
-      attendees: 0,
-      category: '',
-      description: '',
       location: '',
-      attending: '',
-      school_address: '',
-      currentUser: {},
-      profile: {},
+      description: '',
+      attendees: 0,
+      category_id: null,
+      school_id: null,
+      user_id: null
     }
   }
 
   componentDidMount() {
     this.setState({
-      school_address: this.props.school_address,
-      currentUser: this.props.currentUser,
-      profile: this.props.profile,
+      name: this.props.event.name,
+      date: this.props.event.date,
+      location: this.props.event.location,
+      description: this.props.event.description,
+      attendees: this.props.event.attendees,
+      user_id: this.props.event.user_id,
+      category_id: this.props.event.category_id,
+      school_id: this.props.event.school_id,
     }) 
   }
 
@@ -74,8 +77,8 @@ class NewEvent extends Component {
       this.setState({attendees: 1})
     }
 
-    fetch(API_ROOT + `/events`, {
-      method: 'POST',
+    fetch(API_ROOT + `/events/${this.props.event.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Accepts: 'application/json',
@@ -87,40 +90,31 @@ class NewEvent extends Component {
         description: this.state.description,
         attendees: this.state.attendees,
         category_id: category_id,
-        school_id: this.state.profile.school.id,
-        user_id: this.state.currentUser.id,
+        school_id: this.state.id,
+        user_id: this.state.user_id,
         location: this.state.location,
       })
-    })
-    .then(res => res.json())
-    .then(event => {
-      this.props.createEvent(event)
-      if (this.state.attending === 'y') {
-        this.props.attendEvent(event, 'attending')
-      }
     })
     this.props.history.push('/')
   }
 
   render() {
-
-    const { value } = this.state.attending
     return (
       <Container>
         <Segment raised>
           <Form onSubmit={this.handleSubmit}>
           <Form.Group widths='equal'>
-            <Form.Input label='Name' placeholder='Event Name' onChange={this.handleName} />
-            <Form.Input label='Date' type='date' onChange={this.handleDate} />
+            <Form.Input label='Name' placeholder={this.state.name} onChange={this.handleName} />
+            <Form.Input label='Date' type='date' placeholder={this.state.date} onChange={this.handleDate} />
           </Form.Group>
           <Form.TextArea 
           label='Description' 
-            placeholder='Give a brief description of your event' 
+            placeholder={this.state.description}
             onChange={this.handleDesc}
           />
-          <Form.Input label='Location' placeholder='Use the map as a guide to find a suitable location' onChange={this.handleLocation}/>
+          <Form.Input label='Location' placeholder={this.state.location} onChange={this.handleLocation}/>
           <Segment basic style={{height:'600px'}}>
-            <EventCreationMap location={this.state.school_address}/>
+            <EventCreationMap location={this.state.location}/>
           </Segment>
 
           <Form.Group inline>
@@ -130,19 +124,7 @@ class NewEvent extends Component {
               placeholder='Category'
               onChange={this.handleCategory}
             />
-            <label>Will You Be Attending?</label>
-            <Form.Radio
-              label='Yes'
-              value='y'
-              checked={value === 'y'}
-              onChange={this.handleAttending}
-            />
-            <Form.Radio
-              label='No'
-              value='n'
-              checked={value === 'n'}
-              onChange={this.handleAttending}
-            />
+           
           </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
@@ -150,7 +132,6 @@ class NewEvent extends Component {
       </Container>
     );
   }
-
 }
 
-export default NewEvent;
+export default EditEvent;

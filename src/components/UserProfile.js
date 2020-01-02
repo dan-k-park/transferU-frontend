@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import UserEvents from './UserEvents';
+import UserEvent from './UserEvent';
 import { Link } from 'react-router-dom';
 
-import { Grid, Button, Divider, Segment, Header, Image, Container } from 'semantic-ui-react'
+import { Grid, Button, Divider, Segment, Header, Image, Container, Tab } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
 
@@ -13,6 +13,7 @@ class UserProfile extends Component {
     this.state = {
       profile: {},
       joins: [],
+      createdEvents: [],
       contentLoaded: false,
     }
   }
@@ -21,11 +22,12 @@ class UserProfile extends Component {
     this.setState({
       profile: this.props.profile,
       joins: this.props.joins,
+      createdEvents: this.props.events.filter(event => event.user.id === this.props.profile.user.id),
       contentLoaded: true,
     })
   }
 
-  getUserEvents = () => {
+  getAttendingEvents = () => {
     return this.state.joins.map(join => {
       return join.event
     })
@@ -33,7 +35,12 @@ class UserProfile extends Component {
   
   render() {
 
-    const userEvents = this.getUserEvents();
+    const attendingEvents = this.getAttendingEvents();
+
+    const panes = [
+      { menuItem: 'Attending', render: () => <Tab.Pane>{attendingEvents.map(event => <UserEvent event={event} key={event.id}/>)}</Tab.Pane> },
+      { menuItem: 'Created', render: () => <Tab.Pane>{this.state.createdEvents.map(event => <UserEvent event={event} key={event.id}/>)}</Tab.Pane> },
+    ]
 
     return (
       <>
@@ -72,7 +79,7 @@ class UserProfile extends Component {
               <Segment>
                 <Header size='large'>My Events</Header>
                 <Divider />
-                {userEvents.map(userEvent => <UserEvents event={userEvent} key={userEvent.id}/>)}
+                <Tab panes={panes} />
               </Segment>
             </Grid.Column>
             <Grid.Column>

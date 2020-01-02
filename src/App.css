@@ -23,6 +23,10 @@ body {
   transform: scale(1.1);
 }
 
+.UserEvent:hover {
+  transform: scale(1.1);
+}
+
 .Border {
   border-style: solid;
   border-width: 5px;

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import EventCard from '../components/EventCard';
+import { api } from '../services/api';
 import { Card, Container } from 'semantic-ui-react';
 
 class EventContainer extends Component {
   
-  constructor() {
-    super()
-  }
-
   componentDidMount() {
     if (!localStorage.getItem('token')) {
       this.props.history.push('/login')
@@ -17,6 +14,11 @@ class EventContainer extends Component {
   renderEvents = () => {
     return this.props.events.map(event => {
       return <EventCard key={event.id} event={event} />
+      // api.profile.getUserProfile(event.user).then(profile => {
+      //   return profile
+      // }).then(profile => {
+
+      // })
     })
   }
   

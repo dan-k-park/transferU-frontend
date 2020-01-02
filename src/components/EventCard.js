@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../services/api';
 import { Card, Icon, Image } from 'semantic-ui-react';
 
 import academic from './imgs/academic.jpg';
@@ -49,6 +50,7 @@ class EventCard extends Component {
     const imgUrl = imgs.find(img => img.name === this.props.event.category.name).url
     
     const shortDesc = this.props.event.description.slice(0, this.props.event.description.length * 0.7) + '...';
+
     this.setState({
       event: this.props.event,
       imgUrl: imgUrl,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EventLocationMap from './EventLocationMap';
+import { Link } from "react-router-dom";
 import { Segment, Button } from 'semantic-ui-react';
 
 class EventDetail extends Component {
@@ -39,6 +40,15 @@ class EventDetail extends Component {
     }
   }
 
+  handleEditClick = () => {
+    this.props.editEvent(this.state.event.id)
+  }
+
+  handleDeleteClick = () => {
+    this.props.deleteEvent(this.state.event.id)
+    this.props.history.push('/')
+  }
+
   render() {
     const { name, date, description, location, category } = this.state.event
 
@@ -59,6 +69,13 @@ class EventDetail extends Component {
                   <Button.Or />
                   <Button negative onClick={this.handleCancelClick}>Cancel</Button>
                 </Button.Group>
+                {this.state.event.user.id === this.props.currentUser.id ? 
+                  <Button.Group floated='right'>
+                  <Button positive as={Link} to={`/edit_event/${this.state.event.id}`} onClick={this.handleEditClick}>Edit</Button>
+                  <Button.Or />
+                  <Button negative onClick={this.handleDeleteClick}>Delete</Button>
+                </Button.Group>
+                : null}
             </Segment>
             <Segment style={{height:'660px'}}>
               <h1>Where: {location}</h1>
