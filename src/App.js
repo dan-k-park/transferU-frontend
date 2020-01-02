@@ -111,7 +111,7 @@ class App extends Component {
 
   createEvent = event => {
     const eventsCopy = [...this.state.events]
-    eventsCopy.push(event)
+    eventsCopy.unshift(event)
 
     this.setState({events: eventsCopy})
   }
