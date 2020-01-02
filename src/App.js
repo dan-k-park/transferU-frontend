@@ -30,41 +30,45 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      api.auth.getCurrentUser().then(user => {
-        const profile = api.profile.getUserProfile(user)
-        this.setState({ currentUser: user });
-        return profile
-      })
-      .then(profile => {
-        const categories = api.events.getCategories()
-        this.setState({ profile: profile })
-        return categories
-      })
-      .then(categories => {
-        const events = api.events.getEvents(this.state.profile.school);
-        this.setState({ categories: categories })
-        return events
-      })
-      .then(events => {
-        const joins = api.events.getJoins(this.state.profile)
-        this.setState({
-          events: events,
-          displayEvents: events
-        })
-        return joins
-      })
-      .then(joins => {
-        this.setState({ joins: joins })
-      })
-    }
+    this.fetchEverything();
   }
+
+  fetchEverything = () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    api.auth.getCurrentUser().then(user => {
+      const profile = api.profile.getUserProfile(user)
+      this.setState({ currentUser: user });
+      return profile
+    })
+    .then(profile => {
+      const categories = api.events.getCategories()
+      this.setState({ profile: profile })
+      return categories
+    })
+    .then(categories => {
+      const events = api.events.getEvents(this.state.profile.school);
+      this.setState({ categories: categories })
+      return events
+    })
+    .then(events => {
+      const joins = api.events.getJoins(this.state.profile)
+      this.setState({
+        events: events,
+        displayEvents: events
+      })
+      return joins
+    })
+    .then(joins => {
+      this.setState({ joins: joins })
+    })
+  }
+}
 
   // Login/logout methods
   login = user => {
     localStorage.setItem('token', user.jwt);
-    this.setState({ currentUser: user });
+    this.fetchEverything()
   }
 
   logout = () => {

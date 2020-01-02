@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 
-import { Button, Container, Form, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
 class Login extends Component {
   constructor() {
@@ -37,17 +37,25 @@ class Login extends Component {
     const { fields } = this.state;
     
     return(
-      <Container>
+      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as='h2' color='teal' textAlign='center'>
+          Log-in to your account
+        </Header>
         <Segment raised>
-          <Form>
-            <Form.Input  
+           <Form>
+             <Form.Input  
               name="username"
+              icon='user'
+              iconPosition='left'
               placeholder="Username"
               value={fields.username}
               onChange={this.handleChange}
               />
             <Form.Input
               name="password"
+              icon='lock'
+              iconPosition='left'
               type="password"
               placeholder="Password"
               value={fields.password}
@@ -60,7 +68,8 @@ class Login extends Component {
             </Button>
           </Form>
         </Segment>
-      </Container>
+      </Grid.Column>
+    </Grid>
     )
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import EventCreationMap from './EventCreationMap';
-import { Form, Container, Segment } from 'semantic-ui-react';
+import { Button, Form, Container, Segment } from 'semantic-ui-react';
 
 const API_ROOT = 'http://localhost:3001'
 
@@ -108,7 +108,7 @@ class NewEvent extends Component {
     return (
       <Container>
         <Segment raised>
-          <Form onSubmit={this.handleSubmit}>
+          <Form>
           <Form.Group widths='equal'>
             <Form.Input label='Name' placeholder='Event Name' onChange={this.handleName} />
             <Form.Input label='Date' type='date' onChange={this.handleDate} />
@@ -144,7 +144,7 @@ class NewEvent extends Component {
               onChange={this.handleAttending}
             />
           </Form.Group>
-          <Form.Button>Submit</Form.Button>
+          <Button color='teal' onClick={this.handleSubmit}>Submit</Button>
         </Form>
         </Segment>
       </Container>

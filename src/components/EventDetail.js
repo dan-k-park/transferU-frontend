@@ -28,10 +28,7 @@ class EventDetail extends Component {
     if (this.state.join) {
       alert('You\'re already attending this event')
     } else {
-      this.props.attendEvent(this.state.event, true).then(join => {
-        debugger
-        return join
-      })
+      this.props.attendEvent(this.state.event, true)
     }
   }
 
