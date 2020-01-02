@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Geocode from "react-geocode";
 import { Container } from 'semantic-ui-react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
-Geocode.setApiKey('AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA');
+Geocode.setApiKey('scramblesthedeathdealer');
 // need to send user's school as a prop
 
 const style = {
@@ -18,6 +18,11 @@ class EventCreationMap extends Component {
     this.state = {
       lat: 0,
       lng: 0,
+      address: '',
+      position: {},
+      showingInfoWindow: false,  //Hides or the shows the infoWindow
+      activeMarker: {},          //Shows the active marker upon click
+      selectedPlace: {},
       coordsLoaded: false,
     }
   }
@@ -38,13 +43,33 @@ class EventCreationMap extends Component {
   onClick = (mapProps, map, clickEvent) => {
     const lat = clickEvent.latLng.lat()
     const lng = clickEvent.latLng.lng()
+    this.setState({
+      position: { lat, lng },
+    })
     Geocode.fromLatLng(lat, lng).then(
       response => {
         const address = response.results[0].formatted_address;
-        alert(address);
+        this.setState({ address: address })
       }
     );
   }
+
+  onMarkerClick = (props, marker, e) => {
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
+  }
+
+  onClose = props => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      });
+    }
+  };
 
   render() {
 
@@ -52,13 +77,26 @@ class EventCreationMap extends Component {
       <div>
         {this.state.coordsLoaded ? 
           <Container style={{width: '100%', height: '100%'}}>
-            <Map
-              google={this.props.google}
-              zoom={17}
-              style={style}
-              onClick={this.onClick}
-              initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
-            >
+              <Map
+                google={this.props.google}
+                zoom={17}
+                style={style}
+                onClick={this.onClick}
+                initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
+              >
+                <Marker
+                position={this.state.position}
+                onClick={this.onMarkerClick}
+                />
+                <InfoWindow
+                marker={this.state.activeMarker}
+                visible={this.state.showingInfoWindow}
+                onClose={this.onClose}
+                >
+                <div>
+                  <h4>{this.state.address}</h4>
+                </div>
+              </InfoWindow>
             </Map>
           </Container>
           : null
@@ -70,5 +108,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
+  apiKey: 'scramblesthedeathdealer'
 })(EventCreationMap);
