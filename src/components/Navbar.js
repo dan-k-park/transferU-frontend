@@ -49,6 +49,7 @@ const Navbar = props => {
               <Dropdown.Item text='Other' onClick={filterOther}/>
             </Dropdown.Menu>
           </Dropdown>
+          <></>
           <Dropdown text={currentUser.username}>
             <Dropdown.Menu direction={'left'}>
               <Dropdown.Item as={Link} to={`/profiles/${props.profile.id}`} text='My Profile' />

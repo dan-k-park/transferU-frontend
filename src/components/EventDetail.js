@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import EventLocationMap from './EventLocationMap';
 import { Link } from "react-router-dom";
 import { Segment, Button } from 'semantic-ui-react';
+import { api } from '../services/api';
+
 
 class EventDetail extends Component {
 
@@ -9,6 +11,7 @@ class EventDetail extends Component {
     super(props)
     this.state = {
       event: {},
+      creatorName: '',
       join: {},
       contentLoaded: false,
     }
@@ -17,10 +20,14 @@ class EventDetail extends Component {
   componentDidMount() {
     const event = this.props.events.filter(event => event.id == this.props.match.params.id)[0]
     const join = this.props.findJoin(event)
-    this.setState({
-      event: event,
-      join: join,
-      contentLoaded: true,
+
+    api.profile.getUserProfile(event.user).then(profile => {
+      this.setState({
+        event: event,
+        creatorName: profile.name,
+        join: join,
+        contentLoaded: true,
+      })
     })
   }
 
@@ -60,6 +67,7 @@ class EventDetail extends Component {
           <Segment.Group raised>
             <Segment textAlign='left'>
               <h1>Name: {name} {`(${category.name})`}</h1>
+              <h1>Created by: {this.state.creatorName}</h1>
               <h1>When: {date}</h1>
               <h1>Descripton: </h1>
               <p>{description}</p>
