@@ -192,7 +192,7 @@ class App extends Component {
         <Route
           path='/register'
           exact
-          render={props => <Register {...props} />}
+          render={props => <Register {...props} handleLogin={this.login} />}
         />
 
         <Route 

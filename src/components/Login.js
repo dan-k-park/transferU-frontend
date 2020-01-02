@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 
-import { Container, Form, Segment } from 'semantic-ui-react';
+import { Button, Container, Form, Segment } from 'semantic-ui-react';
 
 class Login extends Component {
   constructor() {
@@ -39,7 +40,7 @@ class Login extends Component {
       <Container>
         <Segment raised>
           {this.state.error ? <h1>Dingdongdoodilydoodoodilydoodilydoo</h1> : null}
-          <Form onSubmit={this.handleSubmit}>
+          <Form>
             <Form.Input  
               name="username"
               placeholder="Username"
@@ -53,7 +54,10 @@ class Login extends Component {
               value={fields.password}
               onChange={this.handleChange}
             />
-            <Form.Button>Login</Form.Button>
+            <Button onClick={this.handleSubmit} color='teal'>Login</Button>
+            <Button as={Link} to={`/register`} color='teal'>
+              Register
+            </Button>
           </Form>
         </Segment>
       </Container>
