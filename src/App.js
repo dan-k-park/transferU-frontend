@@ -266,10 +266,10 @@ class App extends Component {
         <Route path='/events/:id' render={props => <EventDetail {...props} 
           events={this.state.events} 
           currentUser={this.state.currentUser}
+          profile={this.state.profile}
           findJoin={this.findJoin}
           attendEvent={this.attendEvent} 
           cancelAttending={this.cancelAttending} 
-          refreshJoins={this.getJoins} 
           deleteEvent={this.deleteEvent}
           editEvent={this.getEventToEdit} />} 
         />

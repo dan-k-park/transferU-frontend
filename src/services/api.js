@@ -62,9 +62,12 @@ const register = (user, profile) => {
     body: JSON.stringify({user: user})
   }).then(res => res.json())
   .then(user => {
-    debugger
-    createProfile(user, profile);
-    return user;
+    if (!user.error) {
+      createProfile(user, profile);
+      return user;
+    } else {
+      return false
+    }
   });
 };
 

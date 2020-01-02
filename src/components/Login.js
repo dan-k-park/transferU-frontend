@@ -39,21 +39,21 @@ class Login extends Component {
     return(
       <Container>
         <Segment raised>
-          {this.state.error ? <h1>Dingdongdoodilydoodoodilydoodilydoo</h1> : null}
           <Form>
             <Form.Input  
               name="username"
               placeholder="Username"
               value={fields.username}
               onChange={this.handleChange}
-            />
+              />
             <Form.Input
               name="password"
               type="password"
               placeholder="Password"
               value={fields.password}
               onChange={this.handleChange}
-            />
+              />
+            {this.state.error ? <p>Invalid Username/Password</p> : null}
             <Button onClick={this.handleSubmit} color='teal'>Login</Button>
             <Button as={Link} to={`/register`} color='teal'>
               Register

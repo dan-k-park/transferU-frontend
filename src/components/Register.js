@@ -62,6 +62,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: false,
       schools: [],
       displaySchools: [],
       displaySchoolNames: [],
@@ -70,7 +71,7 @@ class Register extends Component {
       name: '',
       age: '',
       bio: '',
-      avatarURL: '',
+      avatarURL: 'https://www.sackettwaconia.com/wp-content/uploads/default-profile.png',
       school_id: null,
     }
   }
@@ -122,8 +123,12 @@ class Register extends Component {
     }
 
     api.auth.register(newUser, newProfile).then(user => {
-      this.props.handleLogin(user);
-      this.props.history.push('/')
+      if (user) {
+        this.props.handleLogin(user);
+        this.props.history.push('/')
+      } else {
+        this.setState({ error: true })
+      }
     })
   }
 
@@ -141,13 +146,13 @@ class Register extends Component {
             options={stateAbbreviations}
             placeholder={`Select your school\'s state`}
             onChange={this.filterSchools}
-          />
+            />
             <Form.Select
               label='School'
               options={this.state.displaySchoolNames}
               placeholder='Select your school'
               onChange={this.handleSchools}
-            /> 
+              /> 
           
           </Form.Group>
           <Form.Group widths='equal'>
@@ -159,7 +164,8 @@ class Register extends Component {
             label='Bio' 
             placeholder='Give a brief description of yourself :)'
             onChange={this.handleBio}
-          />
+            />
+          {this.state.error ? <p>Sorry, that username is unavailable</p> : null}
           <Form.Button>Submit</Form.Button>
         </Form>
         </Segment>

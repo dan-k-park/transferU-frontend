@@ -108,5 +108,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'scramblesthedeathdealer'
+  apiKey: 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
 })(EventCreationMap);
