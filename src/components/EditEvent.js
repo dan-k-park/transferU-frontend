@@ -95,7 +95,12 @@ class EditEvent extends Component {
         location: this.state.location,
       })
     })
-    this.props.history.push('/')
+    .then(res => res.json())
+    .then(event => {
+      // Edit event in App's state
+      this.props.editEvent(event);
+      this.props.history.push('/');
+    })
   }
 
   render() {

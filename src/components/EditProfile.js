@@ -47,8 +47,11 @@ class EditProfile extends Component {
         avatarURL: this.state.avatarURL,
       })
     })
-    .then(() => {
-      this.props.history.push(`/`)
+    .then(res => res.json())
+    .then(profile => {
+      // Edit profile in App's state
+      this.props.editProfile(profile);
+      this.props.history.push(`/`);
     })
   }
 

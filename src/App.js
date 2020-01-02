@@ -79,6 +79,24 @@ class App extends Component {
     });
   }
 
+  editProfile = edittedProfile => {
+    this.setState({ profile: edittedProfile })
+  }
+
+  editEvent = edittedEvent => {
+    const eventsCopy = [...this.state.events]
+    const displayEventsCopy = [...this.state.displayEvents]
+    const idxInEvents = eventsCopy.findIndex(event => event.id === edittedEvent.id)
+    const idxIndisplayEvents = displayEventsCopy.findIndex(event => event.id === edittedEvent.id)
+    eventsCopy.splice(idxInEvents, 1, edittedEvent)
+    displayEventsCopy.splice(idxIndisplayEvents, 1, edittedEvent)
+
+    this.setState({
+      events: eventsCopy,
+      displayEvents: displayEventsCopy,
+    })
+  }
+
   filterEvents = categoryName => {
     if (categoryName !== 'All') {
       this.setState({
@@ -109,6 +127,18 @@ class App extends Component {
   }
 
   deleteEvent = id => {
+    const eventsCopy = [...this.state.events]
+    const displayEventsCopy = [...this.state.displayEvents]
+    const idxInEvents = eventsCopy.findIndex(event => event.id === id)
+    const idxIndisplayEvents = displayEventsCopy.findIndex(event => event.id === id)
+    eventsCopy.splice(idxInEvents, 1)
+    displayEventsCopy.splice(idxIndisplayEvents, 1)
+
+    this.setState({
+      events: eventsCopy,
+      displayEvents: displayEventsCopy,
+    })
+
     fetch(API_ROOT + `/events/${id}`, {
       method: 'DELETE',
       headers: {
@@ -252,11 +282,13 @@ class App extends Component {
         />
 
         <Route path='/edit_profile/:id' render={props => <EditProfile {...props}
+          editProfile={this.editProfile}
           profile={this.state.profile}
           /> } 
         />
 
         <Route path='/edit_event/:id' render={props => <EditEvent {...props}
+          editEvent={this.editEvent}
           categories={this.state.categories} 
           event={this.state.eventToEdit}
           /> } 
