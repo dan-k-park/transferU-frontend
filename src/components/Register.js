@@ -136,12 +136,19 @@ class Register extends Component {
   render() {
     return (
       <Container>
-        <Segment raised>
+        <Segment raised size='small'>
           <Form onSubmit={this.handleSubmit}>
           <Form.Group widths='equal'>
           <Form.Input label='Username' placeholder='Username' onChange={this.handleUsername} />
           <Form.Input label='Password' placeholder='Password' onChange={this.handlePassword} />
-          <Form.Select
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
+            <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />
+            <Form.Input label='Profile Picture' placeholder='Enter a link to a profile picture' onChange={this.handleAvatarURL} />
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Form.Select
             label='State'
             options={stateAbbreviations}
             placeholder={`Select your school\'s state`}
@@ -152,13 +159,7 @@ class Register extends Component {
               options={this.state.displaySchoolNames}
               placeholder='Select your school'
               onChange={this.handleSchools}
-              /> 
-          
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
-            <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />
-            <Form.Input label='Profile Picture' placeholder='Enter a link to a profile picture' onChange={this.handleAvatarURL} />
+            /> 
           </Form.Group>
           <Form.TextArea 
             label='Bio' 

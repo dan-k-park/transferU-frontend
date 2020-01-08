@@ -6,7 +6,7 @@ import { Grid, Button, Divider, Segment, Header, Image, Container, Tab } from 's
 
 const API_ROOT = 'http://localhost:3001'
 
-
+// NEED TO CLEAR PROFILE DATA IF GOING TO MY PROFILE AFTER BEING ON ANOTHER USER'S PROFILE PAGE!!!
 
 const square = { width: 175, height: 175 }
 
@@ -29,14 +29,22 @@ class UserProfile extends Component {
         Accepts: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
-    }).then(res => res.json())
-    .then(profiles => {
-     this.setState({
-      profile: profiles.find(profile => profile.id == this.props.match.params.id),
-      joins: this.props.joins,
-      createdEvents: this.props.events.filter(event => event.user.id === this.props.profile.user.id),
-      contentLoaded: true,
     })
+    .then(res => res.json())
+    .then(profiles => {
+      this.setState({ profile: {} })
+      return profiles.find(profile => profile.id == this.props.match.params.id)
+    })
+    .then(profile => {
+      this.setState({
+        profile: profile,
+        createdEvents: this.props.events.filter(event => event.user.id === profile.user.id),
+        contentLoaded: true,
+      })
+      return api.events.getJoins(profile)
+    })
+    .then(joins => {
+      this.setState({ joins: joins })
     })
   }
 

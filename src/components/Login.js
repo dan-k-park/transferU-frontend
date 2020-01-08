@@ -16,6 +16,13 @@ class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    const token = localStorage.getItem('token')
+    if (token) {
+      this.props.history.push('/')
+    }
+  }
+
   handleChange = evt => {
     const newFields = { ...this.state.fields, [evt.target.name]: evt.target.value };
     this.setState({ fields: newFields });

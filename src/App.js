@@ -25,7 +25,6 @@ class App extends Component {
       displayEvents: [],
       eventToEdit: {},
       categories: [],
-      joins: [],
     };
   }
 
@@ -33,60 +32,61 @@ class App extends Component {
     this.fetchEverything();
   }
 
-  fetchEverything = () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    api.auth.getCurrentUser().then(user => {
-      const profile = api.profile.getUserProfile(user)
-      this.setState({ currentUser: user });
-      return profile
-    })
-    .then(profile => {
-      const categories = api.events.getCategories()
-      this.setState({ profile: profile })
-      return categories
-    })
-    .then(categories => {
-      const events = api.events.getEvents(this.state.profile.school);
-      this.setState({ categories: categories })
-      return events
-    })
-    .then(events => {
-      const joins = api.events.getJoins(this.state.profile)
-      this.setState({
-        events: events,
-        displayEvents: events
-      })
-      return joins
-    })
-    .then(joins => {
-      this.setState({ joins: joins })
-    })
-  }
-}
-
-  // Login/logout methods
+  // Auth
   login = user => {
     localStorage.setItem('token', user.jwt);
-    this.fetchEverything()
+    console.log(localStorage.getItem('token'))
+    this.fetchEverything();
+  }
+  
+  logout = () => {
+    this.clearEverything();
+    localStorage.removeItem('token');
+  }
+  
+  fetchEverything = () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      api.auth.getCurrentUser().then(user => {
+        const profile = api.profile.getUserProfile(user)
+        this.setState({ currentUser: user });
+        return profile
+      })
+      .then(profile => {
+        const categories = api.events.getCategories()
+        this.setState({ profile: profile })
+        return categories
+      })
+      .then(categories => {
+        const events = api.events.getEvents(this.state.profile.school);
+        this.setState({ categories: categories })
+        return events
+      })
+      .then(events => {
+        this.setState({
+          events: events,
+          displayEvents: events
+        })
+      })
+    }
   }
 
-  logout = () => {
-    localStorage.removeItem('token');
+  clearEverything = () => {
     this.setState({ 
       currentUser: {},
       profile: {},
       events: [],
       displayEvents: [],
       categories: [],
-      joins: [],
     });
   }
 
+  // Profile
   editProfile = edittedProfile => {
     this.setState({ profile: edittedProfile })
   }
-
+  
+  // Events
   editEvent = edittedEvent => {
     const eventsCopy = [...this.state.events]
     const displayEventsCopy = [...this.state.displayEvents]
@@ -118,10 +118,6 @@ class App extends Component {
     eventsCopy.unshift(event)
 
     this.setState({events: eventsCopy})
-  }
-
-  findJoin = event => {
-    return this.state.joins.find(join => join.event.id === event.id)
   }
 
   getEventToEdit = id => {
@@ -170,14 +166,20 @@ class App extends Component {
         }
       })
     })
-    .then(res => res.json())
-    .then(newJoin => {
-      const joinsCopy = [...this.state.joins]
-      joinsCopy.push(newJoin)
-      this.setState({joins: joinsCopy})
-    })
   }
 
+  cancelAttending = (event, id) => {
+    this.adjustAttendeeCount(event, 'cancel')
+    fetch(API_ROOT + `/event_profiles/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accepts: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+  }
+  
   adjustAttendeeCount = (event, action) => {
     let adjustedAttendees = event.attendees;
     action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
@@ -206,25 +208,6 @@ class App extends Component {
     })
   }
 
-  cancelAttending = (event, id) => {
-    this.adjustAttendeeCount(event, 'cancel')
-    fetch(API_ROOT + `/event_profiles/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Accepts: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-    .then(() => {
-      return api.events.getJoins(this.state.profile)
-    })
-    .then(joins => {
-      this.setState({
-        joins: joins
-      })
-    })
-  }
   
   render() {
     return (
@@ -271,7 +254,6 @@ class App extends Component {
           events={this.state.events} 
           currentUser={this.state.currentUser}
           profile={this.state.profile}
-          findJoin={this.findJoin}
           attendEvent={this.attendEvent} 
           cancelAttending={this.cancelAttending} 
           deleteEvent={this.deleteEvent}
@@ -281,7 +263,6 @@ class App extends Component {
         <Route path='/profiles/:id' render={props => <UserProfile {...props} 
           currentUser={this.state.currentUser}
           profile={this.state.profile} 
-          joins={this.state.joins}
           events={this.state.events}
           /> } 
         />

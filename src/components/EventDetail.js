@@ -12,39 +12,41 @@ class EventDetail extends Component {
     this.state = {
       event: {},
       creatorProfile: '',
-      join: {},
       contentLoaded: false,
     }
   }
   
+
   componentDidMount() {
     const event = this.props.events.filter(event => event.id == this.props.match.params.id)[0]
-    const join = this.props.findJoin(event)
-
     api.profile.getUserProfile(event.user).then(profile => {
       this.setState({
         event: event,
         creatorProfile: profile,
-        join: join,
         contentLoaded: true,
       })
     })
   }
 
+  findJoin = () => {
+    
+  }
   handleAttendClick = () => {
-    if (this.state.join) {
-      alert('You\'re already attending this event')
-    } else {
-      this.props.attendEvent(this.state.event, true)
-    }
+    api.events.getJoins(this.props.profile).then(joins => {
+      return joins.find(join => join.event.id === this.state.event.id)
+    })
+    .then(join => {
+      join ? alert('You\'re already attending!') : this.props.attendEvent(this.state.event, true)
+    })
   }
 
   handleCancelClick = () => {
-    if (this.state.join) {
-      this.props.cancelAttending(this.state.event, this.state.join.id)
-    } else {
-      alert('You never signed up for this event')
-    }
+    api.events.getJoins(this.props.profile).then(joins => {
+      return joins.find(join => join.event.id === this.state.event.id)
+    })
+    .then(join => {
+      join ? this.props.cancelAttending(this.state.event, join.id) : alert('You never signed up for this event!')
+    })
   }
 
   handleEditClick = () => {

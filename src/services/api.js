@@ -7,12 +7,37 @@ const headers = {
   Authorization: `Bearer ${token}`
 };
 
+// Auth
+const login = data => {
+  return fetch(`${API_ROOT}/login`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({user: data})
+  }).then(res => res.json());
+}
+
+const register = (user, profile) => {
+  return fetch(`${API_ROOT}/register`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({user: user})
+  }).then(res => res.json())
+  .then(user => {
+    if (!user.error) {
+      createProfile(user, profile);
+      return user;
+    } else {
+      return false
+    }
+  });
+};
 const getCurrentUser = () => {
   return fetch(`${API_ROOT}/current_user`, {
     headers
   }).then(res => res.json());
 };
 
+// Profile
 const getUserProfile = user => {
   return fetch(`${API_ROOT}/profiles`, {headers: headers})
   .then(res => res.json())
@@ -21,10 +46,27 @@ const getUserProfile = user => {
   })
 }
 
+const createProfile = (user, profile) => {
+  return fetch(`${API_ROOT}/profiles`, {
+    method: 'POST',
+    headers,
+    body:JSON.stringify({
+      name: profile.name,
+      age: profile.age,
+      bio: profile.bio,
+      avatarURL: profile.avatarURL,
+      user_id: user.user.id,
+      school_id: profile.school_id
+    })
+  }).then(res => res.json());
+};
+
+// Schools
 const getSchools = () => {
   return fetch(`${API_ROOT}/schools`, {headers: headers}).then(res => res.json())
 }
 
+// Events
 const getEvents = school => {
   return fetch(`${API_ROOT}/events`, {headers: headers})
   .then(res => res.json())
@@ -47,44 +89,7 @@ const getCategories = () => {
   
 }
 
-const login = data => {
-  return fetch(`${API_ROOT}/login`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({user: data})
-  }).then(res => res.json());
-};
 
-const register = (user, profile) => {
-  return fetch(`${API_ROOT}/register`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({user: user})
-  }).then(res => res.json())
-  .then(user => {
-    if (!user.error) {
-      createProfile(user, profile);
-      return user;
-    } else {
-      return false
-    }
-  });
-};
-
-const createProfile = (user, profile) => {
-  return fetch(`${API_ROOT}/profiles`, {
-    method: 'POST',
-    headers,
-    body:JSON.stringify({
-      name: profile.name,
-      age: profile.age,
-      bio: profile.bio,
-      avatarURL: profile.avatarURL,
-      user_id: user.user.id,
-      school_id: profile.school_id
-    })
-  }).then(res => res.json());
-};
 
 
 export const api = {
