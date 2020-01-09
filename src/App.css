@@ -10,6 +10,10 @@ body {
   border: 1px solid black;
 }
 
+.Error {
+  color: red;
+}
+
 
 .BlackText {
   color: black;
@@ -38,4 +42,8 @@ body {
 
 .center {
   margin: auto;
+}
+
+.CenterText {
+  text-align: center;
 }

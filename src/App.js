@@ -21,6 +21,7 @@ class App extends Component {
     this.state = {
       currentUser: {},
       profile: {},
+      school: '',
       events: [],
       displayEvents: [],
       eventToEdit: {},
@@ -54,7 +55,10 @@ class App extends Component {
       })
       .then(profile => {
         const categories = api.events.getCategories()
-        this.setState({ profile: profile })
+        this.setState({
+          profile: profile,
+          school: profile.school.name
+        })
         return categories
       })
       .then(categories => {
@@ -273,7 +277,7 @@ class App extends Component {
         <Route 
           path='/'
           exact
-          render={props =>  <EventContainer {...props} events={this.state.displayEvents} /> }
+          render={props =>  <EventContainer {...props} events={this.state.displayEvents} school={this.state.school} /> }
         />
 
         <Route 

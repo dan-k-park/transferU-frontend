@@ -44,7 +44,7 @@ class Login extends Component {
     const { fields } = this.state;
     
     return(
-      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid textAlign='center' style={{ height: '90vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
           Log-in to your account
@@ -68,11 +68,11 @@ class Login extends Component {
               value={fields.password}
               onChange={this.handleChange}
               />
-            {this.state.error ? <h3 color='red'>Invalid Username/Password</h3> : null}
+            {this.state.error ? <h3 className='Error'>Invalid Username/Password</h3> : null}
             <Button onClick={this.handleSubmit} color='teal'>Login</Button>
-            <Button as={Link} to={`/register`} color='teal'>
-              Register
-            </Button>
+            <br></br>
+            <br></br>
+            <Button as={Link} to={`/register`} color='teal'>Register</Button>
           </Form>
         </Segment>
       </Grid.Column>

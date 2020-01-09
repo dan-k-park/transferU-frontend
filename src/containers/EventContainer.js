@@ -19,12 +19,15 @@ class EventContainer extends Component {
 
   render() {
     return (
+      <>
+      <h2 className='CenterText'>Transfer Students at {this.props.school.startsWith('University') ? `the ${this.props.school}` : this.props.school} Have Planned:</h2>
       <Container>
         <br></br>
         <Card.Group itemsPerRow='3'>
           {this.renderEvents()}
         </Card.Group>
       </Container>
+      </>
     )
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Form, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Form, Segment } from 'semantic-ui-react';
 
 import { api } from '../services/api';
 
@@ -135,42 +135,45 @@ class Register extends Component {
   
   render() {
     return (
-      <Container>
-        <Segment raised size='small'>
-          <Form onSubmit={this.handleSubmit}>
-          <Form.Group widths='equal'>
-          <Form.Input label='Username' placeholder='Username' onChange={this.handleUsername} />
-          <Form.Input label='Password' placeholder='Password' onChange={this.handlePassword} />
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
-            <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />
-            <Form.Input label='Profile Picture' placeholder='Enter a link to a profile picture' onChange={this.handleAvatarURL} />
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Form.Select
-            label='State'
-            options={stateAbbreviations}
-            placeholder={`Select your school's state`}
-            onChange={this.filterSchools}
-            />
-            <Form.Select
-              label='School'
-              options={this.state.displaySchoolNames}
-              placeholder='Select your school'
-              onChange={this.handleSchools}
-            /> 
-          </Form.Group>
-          <Form.TextArea 
-            label='Bio' 
-            placeholder='Give a brief description of yourself :)'
-            onChange={this.handleBio}
-            />
-          {this.state.error ? <p>Sorry, that username is unavailable</p> : null}
-          <Form.Button>Submit</Form.Button>
-        </Form>
-        </Segment>
-      </Container>
+      <Grid centered columns={2}>
+        <Grid.Column>
+          <Header as='h2' color='teal' textAlign='center'>
+            Registration
+          </Header>
+          <Segment raised>
+            <Form>
+            <Form.Input label='Username' placeholder='Username' onChange={this.handleUsername} />
+            {this.state.error ? <p className='Error'>Sorry, that username isn't unavailable</p> : null}
+            <Form.Input label='Password' placeholder='Password' onChange={this.handlePassword} />
+            <Form.Group widths='equal'>
+              <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
+              <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Form.Select
+              label='State'
+              options={stateAbbreviations}
+              placeholder={`Select your school's state`}
+              onChange={this.filterSchools}
+              />
+              <Form.Select
+                label='School'
+                options={this.state.displaySchoolNames}
+                placeholder='Select your school'
+                onChange={this.handleSchools}
+              /> 
+            </Form.Group>
+            <Form.Input label='Profile Picture' placeholder='Picture URL' onChange={this.handleAvatarURL} />
+            <Form.TextArea 
+              label='Bio' 
+              placeholder='Feel free to share anything about yourself here :)'
+              onChange={this.handleBio}
+              />
+            <Button color='teal' onClick={this.handleSubmit}>Register</Button>
+          </Form>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     )
   }
 }
