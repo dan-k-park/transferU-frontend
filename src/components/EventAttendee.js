@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, List } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 
 
 const EventAttendee = ({ profile }) => {
