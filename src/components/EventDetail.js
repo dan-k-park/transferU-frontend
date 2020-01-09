@@ -28,10 +28,36 @@ class EventDetail extends Component {
     })
   }
 
-  findJoin = () => {
-    
+  getTime = () => {
+    let rawTime = this.state.event.time.split(':').map(n => parseInt(n))
+    let hour = ''
+    let minute = ''
+    let meridiem = ''
+
+    // Check minutes as parseInt will get rid of leading zeros
+    // ex ['12', '05] becomes [12, 5]
+    if (rawTime[1] < 10) {
+      minute = '0' + rawTime[1];
+    } else {
+      minute = rawTime[1].toString();
+    }
+
+    if (rawTime[0] === 0) {
+      hour = '12';
+      meridiem = 'am';
+    } else if (rawTime[0] > 0 && rawTime[0] < 12) {
+      hour = rawTime[0].toString();
+      meridiem = 'am';
+    } else {
+      hour = (rawTime[0] - 12).toString();
+      meridiem = 'pm'
+    }
+
+    return `${hour}:${minute} ${meridiem}`
   }
+
   handleAttendClick = () => {
+    debugger
     api.events.getJoins(this.props.profile).then(joins => {
       return joins.find(join => join.event.id === this.state.event.id)
     })
@@ -59,7 +85,7 @@ class EventDetail extends Component {
   }
 
   render() {
-    const { name, date, description, location, category } = this.state.event
+    const { name, date, time, description, location, category } = this.state.event
 
     return (      
       <>
@@ -70,7 +96,7 @@ class EventDetail extends Component {
             <Segment textAlign='left'>
               <h1>Name: {name} {`(${category.name})`}</h1>
               <h1>Created by: <Link to={`/profiles/${this.state.creatorProfile.id}`} className='BlackText'>{this.state.creatorProfile.name}</Link></h1>
-              <h1>When: {date}</h1>
+              <h1>When: {date} at {time}</h1>
               <h1>Descripton: </h1>
               <p>{description}</p>
                 <br></br>

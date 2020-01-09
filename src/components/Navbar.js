@@ -6,47 +6,40 @@ import { Menu, Dropdown } from 'semantic-ui-react'
 
 const Navbar = props => {
 
-  const filterAcademic = () => {
-    props.filterEvents('Academic')
+  const handleFilter = evt => {
+    props.filterEvents(evt.target.textContent)
   }
 
-  const filterAthletic = () => {
-    props.filterEvents('Athletic')
-  }
-
-  const filterOutdoor = () => {
-    props.filterEvents('Outdoor')
-  }
-
-  const filterSocial = () => {
-    props.filterEvents('Social')
-  }
-
-  const filterOther = () => {
-    props.filterEvents('Other')
-  }
-
-  const unFilter = () => {
-    props.filterEvents('All')
+  const handleSort = evt => {
+    props.sortEvents(evt.target.textContent)
   }
 
   const currentUser = props.currentUser;
 
   return (
     <Menu secondary inverted size='massive' color='teal'>
-      <Menu.Item as={Link} to='/' onClick={unFilter}>
+      <Menu.Item as={Link} to='/' value='All' onClick={handleFilter}>
         <h2 className='WhiteText'>TransferU</h2>
       </Menu.Item>
 
       {localStorage.getItem('token') ? (
         <Menu.Item position={'right'}>
+          <Dropdown text='Sort'>
+            <Dropdown.Menu direction={'left'} >
+              <Dropdown.Item text='Alphabetical' onClick={handleSort}/>
+              <Dropdown.Item text='Attendees' onClick={handleSort}/>
+              <Dropdown.Item text='Newest' onClick={handleSort}/>
+              <Dropdown.Item text='Oldest' onClick={handleSort}/>
+              <Dropdown.Item text='Upcoming' onClick={handleSort}/>
+            </Dropdown.Menu>
+          </Dropdown>
           <Dropdown text='Filter'>
             <Dropdown.Menu direction={'left'} >
-              <Dropdown.Item text='Academic' onClick={filterAcademic}/>
-              <Dropdown.Item text='Athletic' onClick={filterAthletic}/>
-              <Dropdown.Item text='Outdoor' onClick={filterOutdoor}/>
-              <Dropdown.Item text='Social' onClick={filterSocial}/>
-              <Dropdown.Item text='Other' onClick={filterOther}/>
+              <Dropdown.Item text='Academic' onClick={handleFilter}/>
+              <Dropdown.Item text='Athletic' onClick={handleFilter}/>
+              <Dropdown.Item text='Outdoor' onClick={handleFilter}/>
+              <Dropdown.Item text='Social' onClick={handleFilter}/>
+              <Dropdown.Item text='Other'onClick={handleFilter}/>
             </Dropdown.Menu>
           </Dropdown>
           <></>

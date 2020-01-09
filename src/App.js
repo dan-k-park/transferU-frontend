@@ -102,7 +102,7 @@ class App extends Component {
   }
 
   filterEvents = categoryName => {
-    if (categoryName !== 'All') {
+    if (categoryName !== 'TransferU') {
       this.setState({
         displayEvents: this.state.events.filter(event => event.category.name === categoryName)
       })
@@ -113,11 +113,49 @@ class App extends Component {
     }
   }
 
+  sortEvents = sortBy => {
+    let sortedEvents = []
+    switch (sortBy) {
+      case 'Alphabetical':
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.name > e2.name ? 1 : -1)
+        break;
+      case 'Attendees':
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.attendees < e2.attendees ? 1 : -1)
+        break;
+      // Currently there's a bug where clicking newest/oldest twice reverts the sort
+      // this is because it's basically undoing the sort due to displayEvents being sorted the first time
+      // something to keep in mind
+      case 'Newest':
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
+        break;
+      case 'Oldest':
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) < this.checkDate(e2.created_at) ? 1 : -1)
+        break;
+      case 'Upcoming':
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.date) > this.checkDate(e2.date) ? 1 : -1)
+        break;
+      default:
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.id > e2.id ? 1 : -1)
+    }
+    this.setState({
+      displayEvents: sortedEvents
+    })
+  }
+
+  checkDate = eventDate => {
+    const dateArr = eventDate.split('-').map(n => parseInt(n))
+    const date = new Date(dateArr[2], dateArr[0]-1, dateArr[1])
+    return date
+  }
+
   createEvent = event => {
     const eventsCopy = [...this.state.events]
     eventsCopy.unshift(event)
 
-    this.setState({events: eventsCopy})
+    this.setState({
+      events: eventsCopy,
+      displayEvents: eventsCopy.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
+    })
   }
 
   getEventToEdit = id => {
@@ -216,6 +254,7 @@ class App extends Component {
           currentUser={this.state.currentUser}
           profile={this.state.profile}
           filterEvents={this.filterEvents}
+          sortEvents={this.sortEvents}
           handleLogout={this.logout}
         />
 
