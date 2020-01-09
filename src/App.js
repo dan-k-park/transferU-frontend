@@ -31,13 +31,14 @@ class App extends Component {
 
   componentDidMount() {
     this.fetchEverything();
-  }
-
+  } 
+  
   // Auth
   login = user => {
     localStorage.setItem('token', user.jwt);
     console.log(localStorage.getItem('token'))
     this.fetchEverything();
+    //debugger
   }
   
   logout = () => {

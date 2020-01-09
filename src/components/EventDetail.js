@@ -19,13 +19,17 @@ class EventDetail extends Component {
 
   componentDidMount() {
     const event = this.props.events.filter(event => event.id == this.props.match.params.id)[0]
-    api.profile.getUserProfile(event.user).then(profile => {
-      this.setState({
-        event: event,
-        creatorProfile: profile,
-        contentLoaded: true,
+    if (!event) {
+      this.props.history.push('/')
+    } else {
+      api.profile.getUserProfile(event.user).then(profile => {
+        this.setState({
+          event: event,
+          creatorProfile: profile,
+          contentLoaded: true,
+        })
       })
-    })
+    }
   }
 
   getTime = () => {
@@ -57,7 +61,6 @@ class EventDetail extends Component {
   }
 
   handleAttendClick = () => {
-    debugger
     api.events.getJoins(this.props.profile).then(joins => {
       return joins.find(join => join.event.id === this.state.event.id)
     })
