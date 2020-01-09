@@ -23,6 +23,7 @@ const Navbar = props => {
       </Menu.Item>
 
       {localStorage.getItem('token') ? (
+        <>
         <Menu.Item position={'right'}>
           <Dropdown text='Sort'>
             <Dropdown.Menu direction={'left'} >
@@ -33,16 +34,21 @@ const Navbar = props => {
               <Dropdown.Item text='Upcoming' onClick={handleSort}/>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown text='Filter'>
-            <Dropdown.Menu direction={'left'} >
-              <Dropdown.Item text='Academic' onClick={handleFilter}/>
-              <Dropdown.Item text='Athletic' onClick={handleFilter}/>
-              <Dropdown.Item text='Outdoor' onClick={handleFilter}/>
-              <Dropdown.Item text='Social' onClick={handleFilter}/>
-              <Dropdown.Item text='Other'onClick={handleFilter}/>
-            </Dropdown.Menu>
-          </Dropdown>
-          <></>
+          </Menu.Item>
+
+          <Menu.Item>
+            <Dropdown text='Filter'>
+              <Dropdown.Menu direction={'left'} >
+                <Dropdown.Item text='Academic' onClick={handleFilter}/>
+                <Dropdown.Item text='Athletic' onClick={handleFilter}/>
+                <Dropdown.Item text='Outdoor' onClick={handleFilter}/>
+                <Dropdown.Item text='Social' onClick={handleFilter}/>
+                <Dropdown.Item text='Other'onClick={handleFilter}/>
+              </Dropdown.Menu>
+            </Dropdown>
+        </Menu.Item>
+ 
+          <Menu.Item>
           <Dropdown text={currentUser.username}>
             <Dropdown.Menu direction={'left'}>
               <Dropdown.Item as={Link} to={`/profiles/${props.profile.id}`} text='My Profile' />
@@ -56,7 +62,8 @@ const Navbar = props => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        </Menu.Item>
+         </Menu.Item>
+         </>
         ) : (
           null
         )}

@@ -4,7 +4,6 @@ import { Container } from 'semantic-ui-react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 Geocode.setApiKey('scramblesthedeathdealer');
-// need to send user's school as a prop
 
 const style = {
   width: '90%',
@@ -108,5 +107,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
+  apiKey: 'scramblesthedeathdealer'
 })(EventCreationMap);

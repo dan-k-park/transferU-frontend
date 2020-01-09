@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
 class Login extends Component {
   constructor() {
@@ -68,7 +68,7 @@ class Login extends Component {
               value={fields.password}
               onChange={this.handleChange}
               />
-            {this.state.error ? <p>Invalid Username/Password</p> : null}
+            {this.state.error ? <h3 color='red'>Invalid Username/Password</h3> : null}
             <Button onClick={this.handleSubmit} color='teal'>Login</Button>
             <Button as={Link} to={`/register`} color='teal'>
               Register

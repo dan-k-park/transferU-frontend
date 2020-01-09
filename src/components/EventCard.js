@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import EventAttendee from './EventAttendee'
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image, Popup } from 'semantic-ui-react';
 
 import academic from './imgs/academic.jpg';
 import athletic from './imgs/athletic.jpg';
@@ -51,8 +51,13 @@ class EventCard extends Component {
     
     const shortDesc = this.props.event.description.slice(0, this.props.event.description.length * 0.7) + '...';
 
+    const attendees = this.props.event.profiles.map(profile => {
+      return profile
+    })
+
     this.setState({
       event: this.props.event,
+      attendees: attendees,
       imgUrl: imgUrl,
       shortDesc: shortDesc,
       eventLoaded:true,
@@ -60,6 +65,7 @@ class EventCard extends Component {
   }
 
   render() {
+
     return (
       <>
         {this.state.eventLoaded ?
@@ -72,7 +78,13 @@ class EventCard extends Component {
               <Link to={`events/${this.state.event.id}`}>More Info</Link>
             </Card.Content>
             <Card.Content extra>
-              <Icon name='user' />{this.state.event.attendees} Attending
+              <Popup  
+                trigger={<Icon name='user' />}
+                content={this.state.attendees.map(profile => <EventAttendee profile={profile} key={profile.id} />)}
+                on='click'
+                position='bottom center'
+              />
+              {this.state.event.attendees} Attending
             </Card.Content>
           </Card>
         : null

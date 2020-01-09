@@ -70,9 +70,9 @@ class UserProfile extends Component {
             <Segment>
               <Grid>
                 <Grid.Column width={4}>
-                  <Segment circular style={square}>
-                    <Image style={{'fontSize':62}} avatar src={this.state.profile.avatarURL}/>
-                  </Segment>
+                  <Container circular style={square}>
+                    <Image style={{'fontSize':87}} avatar src={this.state.profile.avatarURL}/>
+                  </Container>
                 </Grid.Column>
                 <Grid.Column width={4} textAlign={'left'}>
                   <br></br>

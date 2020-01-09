@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Container, Form, Segment } from 'semantic-ui-react';
+import { Container, Form, Segment } from 'semantic-ui-react';
 
 import { api } from '../services/api';
 
@@ -151,7 +151,7 @@ class Register extends Component {
             <Form.Select
             label='State'
             options={stateAbbreviations}
-            placeholder={`Select your school\'s state`}
+            placeholder={`Select your school's state`}
             onChange={this.filterSchools}
             />
             <Form.Select

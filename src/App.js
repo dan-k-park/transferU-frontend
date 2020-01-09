@@ -135,7 +135,7 @@ class App extends Component {
         sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.date) > this.checkDate(e2.date) ? 1 : -1)
         break;
       default:
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.id > e2.id ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
     }
     this.setState({
       displayEvents: sortedEvents
