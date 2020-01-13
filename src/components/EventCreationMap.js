@@ -3,7 +3,7 @@ import Geocode from "react-geocode";
 import { Container } from 'semantic-ui-react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
-Geocode.setApiKey('scramblesthedeathdealer');
+Geocode.setApiKey('AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA');
 
 const style = {
   width: '90%',
@@ -107,5 +107,5 @@ class EventCreationMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'scramblesthedeathdealer'
+  apiKey: 'AIzaSyDYdkyg10xcm8DcNGIrE1rUWy8ET1SROzA'
 })(EventCreationMap);

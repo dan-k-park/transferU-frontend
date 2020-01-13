@@ -29,55 +29,48 @@ class App extends Component {
     };
   }
 
+
   componentDidMount() {
     this.fetchEverything();
-  } 
-  
+  }
+
   // Auth
   login = user => {
     localStorage.setItem('token', user.jwt);
-    console.log(localStorage.getItem('token'))
     this.fetchEverything();
-    //debugger
   }
-  
+
   logout = () => {
     this.clearEverything();
     localStorage.removeItem('token');
   }
-  
+
   fetchEverything = () => {
     const token = localStorage.getItem('token')
     if (token) {
       api.auth.getCurrentUser().then(user => {
-        const profile = api.profile.getUserProfile(user)
-        this.setState({ currentUser: user });
-        return profile
-      })
-      .then(profile => {
-        const categories = api.events.getCategories()
-        this.setState({
-          profile: profile,
-          school: profile.school.name
-        })
-        return categories
-      })
-      .then(categories => {
-        const events = api.events.getEvents(this.state.profile.school);
-        this.setState({ categories: categories })
-        return events
-      })
-      .then(events => {
-        this.setState({
-          events: events,
-          displayEvents: events
-        })
+        if (!user.error && !user.message)
+        {api.profile.getUserProfile(user).then(profile => {
+          api.events.getCategories().then(categories => {
+            api.events.getEvents(profile.school).then(events => {
+              this.setState({
+                categories: categories,
+                currentUser: user,
+                profile: profile,
+                school: profile.school.name,
+                events: events,
+                displayEvents: events
+              })
+            });
+          });
+        })}
       })
     }
   }
 
+
   clearEverything = () => {
-    this.setState({ 
+    this.setState({
       currentUser: {},
       profile: {},
       events: [],
@@ -90,7 +83,7 @@ class App extends Component {
   editProfile = edittedProfile => {
     this.setState({ profile: edittedProfile })
   }
-  
+
   // Events
   editEvent = edittedEvent => {
     const eventsCopy = [...this.state.events]
@@ -122,25 +115,25 @@ class App extends Component {
     let sortedEvents = []
     switch (sortBy) {
       case 'Alphabetical':
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.name > e2.name ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => e1.name > e2.name ? 1 : -1)
         break;
       case 'Attendees':
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => e1.attendees < e2.attendees ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => e1.attendees < e2.attendees ? 1 : -1)
         break;
       // Currently there's a bug where clicking newest/oldest twice reverts the sort
       // this is because it's basically undoing the sort due to displayEvents being sorted the first time
       // something to keep in mind
       case 'Newest':
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
         break;
       case 'Oldest':
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) < this.checkDate(e2.created_at) ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => this.checkDate(e1.created_at) < this.checkDate(e2.created_at) ? 1 : -1)
         break;
       case 'Upcoming':
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.date) > this.checkDate(e2.date) ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => this.checkDate(e1.date) > this.checkDate(e2.date) ? 1 : -1)
         break;
       default:
-        sortedEvents = this.state.displayEvents.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
+        sortedEvents = this.state.displayEvents.sort((e1, e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
     }
     this.setState({
       displayEvents: sortedEvents
@@ -149,7 +142,7 @@ class App extends Component {
 
   checkDate = eventDate => {
     const dateArr = eventDate.split('-').map(n => parseInt(n))
-    const date = new Date(dateArr[2], dateArr[0]-1, dateArr[1])
+    const date = new Date(dateArr[2], dateArr[0] - 1, dateArr[1])
     return date
   }
 
@@ -159,7 +152,7 @@ class App extends Component {
 
     this.setState({
       events: eventsCopy,
-      displayEvents: eventsCopy.sort((e1,e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
+      displayEvents: eventsCopy.sort((e1, e2) => this.checkDate(e1.created_at) > this.checkDate(e2.created_at) ? 1 : -1)
     })
   }
 
@@ -222,14 +215,14 @@ class App extends Component {
       }
     })
   }
-  
+
   adjustAttendeeCount = (event, action) => {
     let adjustedAttendees = event.attendees;
     action === 'attend' ? adjustedAttendees++ : adjustedAttendees--
     if (adjustedAttendees < 0) {
       adjustedAttendees = 0;
     }
-    fetch(API_ROOT + `/events/${event.id}`,{
+    fetch(API_ROOT + `/events/${event.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -240,22 +233,22 @@ class App extends Component {
         attendees: adjustedAttendees
       })
     })
-    .then(() => {
-      return api.events.getEvents(this.state.profile.school)
-    })
-    .then(events => {
-      this.setState({
-        events: events,
-        displayEvents: events,
+      .then(() => {
+        return api.events.getEvents(this.state.profile.school)
       })
-    })
+      .then(events => {
+        this.setState({
+          events: events,
+          displayEvents: events,
+        })
+      })
   }
 
-  
+
   render() {
     return (
       <Router>
-        <Navbar 
+        <Navbar
           currentUser={this.state.currentUser}
           profile={this.state.profile}
           filterEvents={this.filterEvents}
@@ -275,53 +268,53 @@ class App extends Component {
           render={props => <Register {...props} handleLogin={this.login} />}
         />
 
-        <Route 
+        <Route
           path='/'
           exact
-          render={props =>  <EventContainer {...props} events={this.state.displayEvents} school={this.state.school} /> }
+          render={props => <EventContainer {...props} events={this.state.displayEvents} school={this.state.school} />}
         />
 
-        <Route 
+        <Route
           path='/new_event'
           exact
-          render={(props) => <NewEvent {...props} 
-          createEvent={this.createEvent} 
-          attendEvent={this.attendEvent} 
-          school_address={this.state.profile.school.address} 
-          categories={this.state.categories} 
-          currentUser={this.state.currentUser}
-          profile={this.state.profile}
+          render={(props) => <NewEvent {...props}
+            createEvent={this.createEvent}
+            attendEvent={this.attendEvent}
+            school_address={this.state.profile.school.address}
+            categories={this.state.categories}
+            currentUser={this.state.currentUser}
+            profile={this.state.profile}
           />}
         />
 
-        <Route path='/events/:id' render={props => <EventDetail {...props} 
-          events={this.state.events} 
+        <Route path='/events/:id' render={props => <EventDetail {...props}
+          events={this.state.events}
           currentUser={this.state.currentUser}
           profile={this.state.profile}
-          attendEvent={this.attendEvent} 
-          cancelAttending={this.cancelAttending} 
+          attendEvent={this.attendEvent}
+          cancelAttending={this.cancelAttending}
           deleteEvent={this.deleteEvent}
-          editEvent={this.getEventToEdit} />} 
+          editEvent={this.getEventToEdit} />}
         />
 
-        <Route path='/profiles/:id' render={props => <UserProfile {...props} 
+        <Route path='/profiles/:id' render={props => <UserProfile {...props}
           currentUser={this.state.currentUser}
-          profile={this.state.profile} 
+          profile={this.state.profile}
           events={this.state.events}
-          /> } 
+        />}
         />
 
         <Route path='/edit_profile/:id' render={props => <EditProfile {...props}
           editProfile={this.editProfile}
           profile={this.state.profile}
-          /> } 
+        />}
         />
 
         <Route path='/edit_event/:id' render={props => <EditEvent {...props}
           editEvent={this.editEvent}
-          categories={this.state.categories} 
+          categories={this.state.categories}
           event={this.state.eventToEdit}
-          /> } 
+        />}
         />
       </Router>
     )

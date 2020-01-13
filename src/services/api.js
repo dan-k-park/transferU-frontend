@@ -1,17 +1,19 @@
 const API_ROOT = 'http://localhost:3001'
-const token = localStorage.getItem('token')
+const token = () => localStorage.getItem('token');
 
-const headers = {
+const headers = () => {
+  return {
   'Content-Type': 'application/json',
   Accepts: 'application/json',
-  Authorization: `Bearer ${token}`
+  Authorization: `Bearer ${token()}`
+}
 };
 
 // Auth
 const login = data => {
   return fetch(`${API_ROOT}/login`, {
     method: 'POST',
-    headers,
+    headers: headers(),
     body: JSON.stringify({user: data})
   }).then(res => res.json());
 }
@@ -19,7 +21,7 @@ const login = data => {
 const register = (user, profile) => {
   return fetch(`${API_ROOT}/register`, {
     method: 'POST',
-    headers,
+    headers: headers(),
     body: JSON.stringify({user: user})
   }).then(res => res.json())
   .then(user => {
@@ -33,13 +35,13 @@ const register = (user, profile) => {
 };
 const getCurrentUser = () => {
   return fetch(`${API_ROOT}/current_user`, {
-    headers
+    headers: headers()
   }).then(res => res.json());
 };
 
 // Profile
 const getUserProfile = user => {
-  return fetch(`${API_ROOT}/profiles`, {headers: headers})
+  return fetch(`${API_ROOT}/profiles`, {headers: headers()})
   .then(res => res.json())
   .then(profiles => {
     return profiles.find(profile => profile.user.id === user.id)
@@ -49,7 +51,7 @@ const getUserProfile = user => {
 const createProfile = (user, profile) => {
   return fetch(`${API_ROOT}/profiles`, {
     method: 'POST',
-    headers,
+    headers: headers(),
     body:JSON.stringify({
       name: profile.name,
       age: profile.age,
@@ -63,12 +65,12 @@ const createProfile = (user, profile) => {
 
 // Schools
 const getSchools = () => {
-  return fetch(`${API_ROOT}/schools`, {headers: headers}).then(res => res.json())
+  return fetch(`${API_ROOT}/schools`, {headers: headers()}).then(res => res.json())
 }
 
 // Events
 const getEvents = school => {
-  return fetch(`${API_ROOT}/events`, {headers: headers})
+  return fetch(`${API_ROOT}/events`, {headers: headers()})
   .then(res => res.json())
   .then(events => {
     return events.filter(event => event.school.id === school.id)
@@ -76,7 +78,7 @@ const getEvents = school => {
 }
 
 const getJoins = profile => {
-  return fetch(`${API_ROOT}/event_profiles`, {headers: headers})
+  return fetch(`${API_ROOT}/event_profiles`, {headers: headers()})
   .then(res => res.json())
   .then(joins => {
     return joins.filter(join => join.profile.id === profile.id )
@@ -85,7 +87,7 @@ const getJoins = profile => {
 }
 
 const getCategories = () => {
-  return fetch(`${API_ROOT}/categories`, {headers: headers}).then(res => res.json())
+  return fetch(`${API_ROOT}/categories`, {headers: headers()}).then(res => res.json())
   
 }
 

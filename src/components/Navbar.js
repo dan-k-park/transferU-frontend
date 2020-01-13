@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from "react-router-dom";
 
-import { Menu, Dropdown } from 'semantic-ui-react'
+import { Menu, Dropdown, Divider } from 'semantic-ui-react'
 
 
 const Navbar = props => {
@@ -24,7 +24,7 @@ const Navbar = props => {
 
       {localStorage.getItem('token') ? (
         <>
-        <Menu.Item position={'right'}>
+          <Menu.Item position={'right'}>
           <Dropdown text='Sort'>
             <Dropdown.Menu direction={'left'} >
               <Dropdown.Item text='Alphabetical' onClick={handleSort}/>
@@ -70,5 +70,8 @@ const Navbar = props => {
     </Menu>
   )
 }
+
+
+
 
 export default withRouter(Navbar);
