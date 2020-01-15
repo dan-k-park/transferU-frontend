@@ -124,6 +124,7 @@ class Register extends Component {
 
     api.auth.register(newUser, newProfile).then(user => {
       if (user) {
+        debugger
         this.props.handleLogin(user);
         this.props.history.push('/')
       } else {
@@ -144,7 +145,7 @@ class Register extends Component {
             <Form>
             <Form.Input label='Username' placeholder='Username' onChange={this.handleUsername} />
             {this.state.error ? <p className='Error'>Sorry, that username isn't unavailable</p> : null}
-            <Form.Input label='Password' placeholder='Password' onChange={this.handlePassword} />
+            <Form.Input label='Password' type='password' placeholder='Password' onChange={this.handlePassword} />
             <Form.Group widths='equal'>
               <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
               <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />

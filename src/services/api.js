@@ -41,6 +41,7 @@ const getCurrentUser = () => {
 
 // Profile
 const getUserProfile = user => {
+  debugger
   return fetch(`${API_ROOT}/profiles`, {headers: headers()})
   .then(res => res.json())
   .then(profiles => {

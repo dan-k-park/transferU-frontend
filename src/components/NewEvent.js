@@ -101,10 +101,6 @@ class NewEvent extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     let category_id = this.findCategoryID();
-    
-    if (this.state.attending === 'y') {
-      this.setState({attendees: 1})
-    }
 
     fetch(API_ROOT + `/events`, {
       method: 'POST',
@@ -118,7 +114,7 @@ class NewEvent extends Component {
         date: this.state.date,
         time: this.state.time,
         description: this.state.description,
-        attendees: this.state.attendees,
+        attendees: this.state.attending === 'y' ? 1 : 0,
         category_id: category_id,
         school_id: this.state.profile.school.id,
         user_id: this.state.currentUser.id,
@@ -168,13 +164,13 @@ class NewEvent extends Component {
             <Form.Radio
               label='Yes'
               value='y'
-              checked={value === 'y'}
+              checked={this.state.attending === 'y'}
               onChange={this.handleAttending}
             />
             <Form.Radio
               label='No'
               value='n'
-              checked={value === 'n'}
+              checked={this.state.attending === 'n'}
               onChange={this.handleAttending}
             />
           </Form.Group>

@@ -109,7 +109,7 @@ class UserProfile extends Component {
               <Segment>
                 <Header size='large'>Friends</Header>
                 <Divider />
-                <h2>None lol</h2>
+                <h2>None</h2>
               </Segment>
             </Grid.Column>
           </Grid>
