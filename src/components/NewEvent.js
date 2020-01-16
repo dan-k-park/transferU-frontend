@@ -125,15 +125,13 @@ class NewEvent extends Component {
     .then(event => {
       this.props.createEvent(event)
       if (this.state.attending === 'y') {
-        this.props.attendEvent(event, 'attending')
+        this.props.attendEvent(event, true, true)
       }
     })
     this.props.history.push('/')
   }
 
   render() {
-
-    const { value } = this.state.attending
     return (
       <Container>
         <Segment raised>

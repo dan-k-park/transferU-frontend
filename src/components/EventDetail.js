@@ -65,7 +65,7 @@ class EventDetail extends Component {
       return joins.find(join => join.event.id === this.state.event.id)
     })
     .then(join => {
-      join ? alert('You\'re already attending!') : this.props.attendEvent(this.state.event, true)
+      join ? alert('You\'re already attending!') : this.props.attendEvent(this.state.event, true, false)
     })
   }
 

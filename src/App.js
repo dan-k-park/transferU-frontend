@@ -185,8 +185,10 @@ class App extends Component {
     })
   }
 
-  attendEvent = (event, attending) => {
-    this.adjustAttendeeCount(event, 'attend')
+  attendEvent = (event, attending, newEvent) => {
+    if (!newEvent) {
+      this.adjustAttendeeCount(event, 'attend')
+    } 
     fetch(API_ROOT + '/event_profiles', {
       method: 'POST',
       headers: {

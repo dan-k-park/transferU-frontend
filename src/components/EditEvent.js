@@ -18,6 +18,7 @@ class EditEvent extends Component {
     this.state = {
       name: '',
       date: '',
+      time: '',
       location: '',
       description: '',
       attendees: 0,
@@ -31,6 +32,7 @@ class EditEvent extends Component {
     this.setState({
       name: this.props.event.name,
       date: this.props.event.date,
+      time: this.props.event.time,
       location: this.props.event.location,
       description: this.props.event.description,
       attendees: this.props.event.attendees,
@@ -48,11 +50,42 @@ class EditEvent extends Component {
     // Reformat date value from YYYY-MM-DD to MM-DD-YYYY for user readability
     let dateArr = evt.target.value.split("-");
     let year = dateArr.shift()
+    let month = parseInt(dateArr.shift())
     dateArr.push(year)
+    dateArr.unshift(month)
     let eventDate = dateArr.join("-")
 
     this.setState({date: eventDate})
   }
+
+  handleTime = evt => {
+    let rawTime = evt.target.value.split(':').map(n => parseInt(n))
+    let hour = ''
+    let minute = ''
+    let meridiem = ''
+
+    // Check minutes as parseInt will get rid of leading zeros
+    // ex ['12', '05] becomes [12, 5]
+    if (rawTime[1] < 10) {
+      minute = '0' + rawTime[1];
+    } else {
+      minute = rawTime[1].toString();
+    }
+
+    if (rawTime[0] === 0) {
+      hour = '12';
+      meridiem = 'am';
+    } else if (rawTime[0] > 0 && rawTime[0] < 12) {
+      hour = rawTime[0].toString();
+      meridiem = 'am';
+    } else {
+      hour = (rawTime[0] - 12).toString();
+      meridiem = 'pm'
+    }
+
+    this.setState({ time: `${hour}:${minute} ${meridiem}` })
+  }
+
 
   handleLocation = evt => {
     this.setState({location: evt.target.value})
@@ -87,6 +120,7 @@ class EditEvent extends Component {
       body: JSON.stringify({
         name: this.state.name,
         date: this.state.date,
+        time: this.state.time,
         description: this.state.description,
         attendees: this.state.attendees,
         category_id: category_id,
@@ -111,6 +145,7 @@ class EditEvent extends Component {
           <Form.Group widths='equal'>
             <Form.Input label='Name' placeholder={this.state.name} onChange={this.handleName} />
             <Form.Input label='Date' type='date' placeholder={this.state.date} onChange={this.handleDate} />
+            <Form.Input label='Time' type='time' onChange={this.handleTime} />
           </Form.Group>
           <Form.TextArea 
           label='Description' 
