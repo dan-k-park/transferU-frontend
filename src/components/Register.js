@@ -68,7 +68,8 @@ class Register extends Component {
       displaySchoolNames: [],
       username: '',
       password: '',
-      name: '',
+      firstName: '',
+      lastName: '',
       age: '',
       bio: '',
       avatarURL: 'https://www.sackettwaconia.com/wp-content/uploads/default-profile.png',
@@ -102,7 +103,8 @@ class Register extends Component {
 
   handleUsername = evt => this.setState({ username: evt.target.value });
   handlePassword = evt => this.setState({ password: evt.target.value });
-  handleName = evt => this.setState({ name: evt.target.value });
+  handleFirstName = evt => this.setState({ firstName: evt.target.value });
+  handleLastName = evt => this.setState({ lastName: evt.target.value });
   handleAge = evt => this.setState({ age: evt.target.value });
   handleBio = evt => this.setState({ bio: evt.target.value });
   handleAvatarURL = evt => this.setState({ avatarURL: evt.target.value });
@@ -115,7 +117,7 @@ class Register extends Component {
     }
 
     const newProfile = {
-      name: this.state.name,
+      name: this.state.firstName + ' ' + this.state.lastName,
       age: this.state.age,
       bio: this.state.bio,
       avatarURL: this.state.avatarURL,
@@ -147,7 +149,8 @@ class Register extends Component {
             {this.state.error ? <p className='Error'>Sorry, that username isn't unavailable</p> : null}
             <Form.Input label='Password' type='password' placeholder='Password' onChange={this.handlePassword} />
             <Form.Group widths='equal'>
-              <Form.Input label='Name' placeholder='Enter your full name' onChange={this.handleName} />
+              <Form.Input label='First Name' placeholder='Enter your first name' onChange={this.handleFirstName} />
+              <Form.Input label='Last Name' placeholder='Enter your last name' onChange={this.handleLastName} />
               <Form.Input label='Age' type='number' placeholder={18} onChange={this.handleAge} />
             </Form.Group>
             <Form.Group widths='equal'>
