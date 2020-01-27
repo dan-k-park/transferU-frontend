@@ -2,6 +2,6 @@ TransferU is an event planning application designed for college transfer student
 <br/>
 New users will be able to register for a profile where they will be able to select their new college based on the state it is located in.
 <br />
-The list of colleges is obtained from a Docker container running via Kitematic.
+The list of colleges is obtained from a Docker container.
 <br>
 Demo: https://drive.google.com/open?id=1bxW83CCAuVlwyBynjjh9-X6xcEUN6Z21
