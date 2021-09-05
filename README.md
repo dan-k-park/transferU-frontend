@@ -4,4 +4,3 @@ New users will be able to register for a profile where they will be able to sele
 <br />
 The list of colleges is obtained from a Docker container.
 <br>
-Demo: https://drive.google.com/open?id=1bxW83CCAuVlwyBynjjh9-X6xcEUN6Z21
